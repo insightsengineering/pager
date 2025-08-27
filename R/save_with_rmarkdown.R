@@ -68,7 +68,6 @@ save_with_rmarkdown <- function(x, path, reference_docx = NULL, output = "docx")
   chr_rmarkdown_chunk <- .create_chunks(ifelse(inherits(x, "list"), length(x), 1L))
 
   chr_rmarkdown <- c(chr_rmarkdown_yaml, "", chr_rmarkdown_chunk)
-  cat(chr_rmarkdown, sep = "\n")
 
   # write file via R markdown --------------------------------------------------
   writeLines(chr_rmarkdown, con = temp_file_rmd)
