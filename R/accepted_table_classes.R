@@ -6,5 +6,5 @@
 #' @examples
 #' accepted_table_classes()
 accepted_table_classes <- function() {
-  c("gtsummary", "gt", "flextable")
+  c("gtsummary", "gt_tbl", "flextable")
 }

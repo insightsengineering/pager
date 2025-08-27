@@ -2,7 +2,7 @@
 #'
 #' Save Input via R markdown.
 #'
-#' @param x (`gtsummary`/`flextable`/`list`)\cr
+#' @param x (`gtsummary`/`gt_tbl`/`flextable`/`list`)\cr
 #'   table object of class `'gtsummary'` or `'flextable'`, or a list
 #'   of table objects.
 #' @param path (`path`)\cr
