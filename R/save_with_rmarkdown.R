@@ -3,7 +3,7 @@
 #' Save Input via R markdown.
 #'
 #' @param x (`gtsummary`/`gt_tbl`/`flextable`/`list`)\cr
-#'   table object of class `'gtsummary'` or `'flextable'`, or a list
+#'   table object of class `'gtsummary'`, `'gt_tbl'` (gt table) or `'flextable'`, or a list
 #'   of table objects.
 #' @param path (`path`)\cr
 #'   path to save file to, e.g. "rendered_table.docx"

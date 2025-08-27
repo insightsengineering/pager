@@ -7,8 +7,8 @@
 save_with_rmarkdown(x, path, reference_docx = NULL, output = "docx")
 }
 \arguments{
-\item{x}{(\code{gtsummary}/\code{flextable}/\code{list})\cr
-table object of class \code{'gtsummary'} or \code{'flextable'}, or a list
+\item{x}{(\code{gtsummary}/\code{gt_tbl}/\code{flextable}/\code{list})\cr
+table object of class \code{'gtsummary'}, \code{'gt_tbl'} (gt table) or \code{'flextable'}, or a list
 of table objects.}
 
 \item{path}{(\code{path})\cr
