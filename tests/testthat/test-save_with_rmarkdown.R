@@ -1,3 +1,25 @@
-test_that("save_with_rmarkdown() works", {
-  expect_equal(2 * 2, 4)
+test_that("save_with_rmarkdown() works with flextable", {
+  tbl <-
+    cards::ADAE[1:150,] |>
+    gtsummary::tbl_hierarchical(
+      variables = c(AESOC, AETERM),
+      by = TRTA,
+      denominator = cards::ADSL,
+      id = USUBJID,
+    )
+
+  # test with a single table
+  expect_error(
+    gtsummary::as_flex_table(tbl) |>
+      save_with_rmarkdown(, path = tempfile(fileext = ".docx")),
+    NA
+  )
+
+  # test with a list of tables
+  expect_error(
+    gtsummary::tbl_split_by_rows(tbl, row_numbers = 20) |>
+      map(gtsummary::as_flex_table) |>
+      save_with_rmarkdown(, path = tempfile(fileext = ".docx")),
+    NA
+  )
 })

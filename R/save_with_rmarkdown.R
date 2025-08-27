@@ -31,7 +31,7 @@
 #'   as_flex_table()
 #'
 #' # save as docx
-#' save_with_rmarkdown(x = tbl, path = tempfile(fileext = "docx"))
+#' save_with_rmarkdown(x = tbl, path = tempfile(fileext = ".docx"))
 save_with_rmarkdown <- function(x, path, reference_docx = NULL, output = "docx") {
   set_cli_abort_call()
   # check inputs ---------------------------------------------------------------
@@ -50,8 +50,8 @@ save_with_rmarkdown <- function(x, path, reference_docx = NULL, output = "docx")
   output <- arg_match(output)
 
   # set temp files -------------------------------------------------------------
-  temp_file_x <- tempfile(fileext = "rds")
-  temp_file_rmd <- tempfile(fileext = "rmd")
+  temp_file_x <- tempfile(fileext = ".rds")
+  temp_file_rmd <- tempfile(fileext = ".rmd")
   # save the input object to a tempfile (which will be loaded in the rmd file) -
   saveRDS(x, file = temp_file_x)
 

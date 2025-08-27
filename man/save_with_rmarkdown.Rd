@@ -42,5 +42,5 @@ tbl <-
   as_flex_table()
 
 # save as docx
-save_with_rmarkdown(x = tbl, path = tempfile(fileext = "docx"))
+save_with_rmarkdown(x = tbl, path = tempfile(fileext = ".docx"))
 }
