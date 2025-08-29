@@ -11,6 +11,7 @@ Description: What the package does (one paragraph).
 License: Apache License 2.0
 Imports: 
     cli,
+    fs,
     glue,
     rlang,
     rmarkdown

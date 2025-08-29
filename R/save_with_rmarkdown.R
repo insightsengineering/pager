@@ -18,27 +18,32 @@
 #'
 #' @examples
 #' # create table
-#' library(gtsummary)
-#'
 #' tbl <-
 #'   cards::ADAE[1:150,] |>
-#'   tbl_hierarchical(
+#'   gtsummary::tbl_hierarchical(
 #'     variables = c(AESOC, AETERM),
 #'     by = TRTA,
 #'     denominator = cards::ADSL,
 #'     id = USUBJID,
-#'   ) |>
-#'   as_flex_table()
+#'   )
 #'
 #' # save as docx
-#' save_with_rmarkdown(x = tbl, path = tempfile(fileext = ".docx"))
-save_with_rmarkdown <- function(x, path, reference_docx = NULL, output = "docx") {
+#' gtsummary::as_flex_table(tbl) |>
+#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+#'
+#' # split the tqble and save paginatted table
+#' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+save_with_rmarkdown <- function(x,
+                                path,
+                                reference_docx = get_reference_docx("portrait")) {
   set_cli_abort_call()
   # check inputs ---------------------------------------------------------------
   check_not_missing(x)
   check_not_missing(path)
   check_string(path)
   check_string(reference_docx, allow_empty = TRUE)
+
   check_class(x, cls = c(accepted_table_classes(), "list"))
   # check each object in the list is a table
   if (inherits(x, "list") && some(x, ~!inherits(.x, accepted_table_classes()))) {
@@ -47,7 +52,6 @@ save_with_rmarkdown <- function(x, path, reference_docx = NULL, output = "docx")
       call = get_cli_abort_call()
     )
   }
-  output <- arg_match(output)
 
   # set temp files -------------------------------------------------------------
   temp_file_x <- tempfile(fileext = ".rds")
@@ -64,8 +68,8 @@ save_with_rmarkdown <- function(x, path, reference_docx = NULL, output = "docx")
   pkg_to_attach <- ifelse(pkg_to_attach == "gt_tbl", "gt", pkg_to_attach)
 
   # string of the yaml header
-  chr_rmarkdown_yaml <- .create_yaml_header(temp_file_x, pkg_to_attach, reference_docx)
-  chr_rmarkdown_chunk <- .create_chunks(ifelse(inherits(x, "list"), length(x), 1L))
+  chr_rmarkdown_yaml <- create_yaml_header(temp_file_x, pkg_to_attach, reference_docx)
+  chr_rmarkdown_chunk <- create_chunks(ifelse(inherits(x, "list"), length(x), 1L))
 
   chr_rmarkdown <- c(chr_rmarkdown_yaml, "", chr_rmarkdown_chunk)
 
@@ -86,37 +90,4 @@ save_with_rmarkdown <- function(x, path, reference_docx = NULL, output = "docx")
 
 
   invisible(x)
-}
-
-.create_yaml_header <- function(object_path, pkg_to_attach, reference_docx) {
-  c("---",
-    "output:",
-    "  word_document:",
-    if (!is_empty(reference_docx)) glue::glue("    reference_docx: !expr {reference_docx}"),
-    "---",
-    "",
-    "```{r setup, include=FALSE}",
-    "knitr::opts_chunk$set(echo = FALSE, message = FALSE)",
-    paste0("library(", pkg_to_attach, ")"),
-    paste("x <-", rlang::call2("readRDS", file = as.character(object_path)) |> rlang::expr_deparse(width = Inf)),
-    "if (!inherits(x, 'list')) x <- list(x)",
-    "```",
-    "")
-}
-
-.create_chunks <- function(length) {
-  map(
-    seq_len(length),
-    \(i) {
-      str_chunk <- c("```{r}", glue::glue("x[[{i}]]"), "```")
-
-      # add page break between tables (but not to the last table)
-      if (i < length) {
-        str_chunk <- c(str_chunk, "", "\newpage", "")
-      }
-
-      str_chunk
-    }
-  ) |>
-    unlist()
 }

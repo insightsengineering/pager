@@ -1,1 +1,4 @@
 .Rproj.user
+
+# don't commit temp MS Office files
+~$*

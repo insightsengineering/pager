@@ -4,7 +4,7 @@
 \alias{save_with_rmarkdown}
 \title{Save as docx}
 \usage{
-save_with_rmarkdown(x, path, reference_docx = NULL, output = "docx")
+save_with_rmarkdown(x, path, reference_docx = get_reference_docx("portrait"))
 }
 \arguments{
 \item{x}{(\code{gtsummary}/\code{gt_tbl}/\code{flextable}/\code{list})\cr
@@ -29,18 +29,20 @@ Save Input via R markdown.
 }
 \examples{
 # create table
-library(gtsummary)
-
 tbl <-
   cards::ADAE[1:150,] |>
-  tbl_hierarchical(
+  gtsummary::tbl_hierarchical(
     variables = c(AESOC, AETERM),
     by = TRTA,
     denominator = cards::ADSL,
     id = USUBJID,
-  ) |>
-  as_flex_table()
+  )
 
 # save as docx
-save_with_rmarkdown(x = tbl, path = tempfile(fileext = ".docx"))
+gtsummary::as_flex_table(tbl) |>
+  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+
+# split the tqble and save paginatted table
+gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 }
