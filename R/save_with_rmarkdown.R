@@ -7,8 +7,6 @@
 #'   of table objects.
 #' @param path (`path`)\cr
 #'   path to save file to, e.g. "rendered_table.docx"
-#' @param output (`string`)
-#'   Output format. For now, only `docx` output type is supported.
 #' @param reference_docx (`path`)\cr
 #'   Path to reference document that when not `NULL` is passed to the
 #'   `reference_docx:` R markdown field.

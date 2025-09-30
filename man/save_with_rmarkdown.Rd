@@ -17,9 +17,6 @@ path to save file to, e.g. "rendered_table.docx"}
 \item{reference_docx}{(\code{path})\cr
 Path to reference document that when not \code{NULL} is passed to the
 \verb{reference_docx:} R markdown field.}
-
-\item{output}{(\code{string})
-Output format. For now, only \code{docx} output type is supported.}
 }
 \value{
 x (invisibly)
