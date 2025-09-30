@@ -67,11 +67,6 @@ path to save file to, e.g. "rendered_table.docx"</p></dd>
 Path to reference document that when not <code>NULL</code> is passed to the
 <code>reference_docx:</code> R markdown field.</p></dd>
 
-
-<dt id="arg-output">output<a class="anchor" aria-label="anchor" href="#arg-output"></a></dt>
-<dd><p>(<code>string</code>)
-Output format. For now, only <code>docx</code> output type is supported.</p></dd>
-
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -93,12 +88,12 @@ Output format. For now, only <code>docx</code> output type is supported.</p></dd
 <span class="r-in"><span><span class="co"># save as docx</span></span></span>
 <span class="r-in"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/as_flex_table.html" class="external-link">as_flex_table</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_with_rmarkdown</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpxRCBPk/file1e385cad4cc4.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/Rtmpopq1VW/file1e521978d6e7.docx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># split the tqble and save paginatted table</span></span></span>
 <span class="r-in"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_split_by.html" class="external-link">tbl_split_by_rows</a></span><span class="op">(</span><span class="va">tbl</span>, row_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_with_rmarkdown</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in seq.default(20, nrow(tbl), by = 20):</span> 'to' must be of length 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/Rtmpopq1VW/file1e523bbdb7f1.docx</span></span>
 </code></pre></div>
     </div>
   </div>
