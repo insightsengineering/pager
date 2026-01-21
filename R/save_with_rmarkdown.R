@@ -48,6 +48,9 @@ save_with_rmarkdown <- function(x,
   check_string(path)
   check_string(reference_docx, allow_empty = TRUE)
 
+  # convert path to absolute path to ensure output is created in the correct location
+  path <- normalizePath(path, winslash = "/", mustWork = FALSE)
+
   check_class(x, cls = c(accepted_table_classes(), "list"))
   # check each object in the list is a table
   if (inherits(x, "list") && some(x, ~!inherits(.x, accepted_table_classes()))) {
