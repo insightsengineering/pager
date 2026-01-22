@@ -44,7 +44,7 @@ gtsummary::as_flex_table(tbl) |>
 tbl |>
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 
-# split the tqble and save paginatted table
+# split the table and save paginated table
 gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 
