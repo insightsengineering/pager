@@ -35,11 +35,17 @@ tbl <-
     id = USUBJID,
   )
 
-# save as docx
+# save as docx with flextable
 gtsummary::as_flex_table(tbl) |>
+  flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 
-# split the tqble and save paginatted table
+# save as docx with gt
+tbl |>
+  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+
+# split the table and save paginated table
 gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+
 }

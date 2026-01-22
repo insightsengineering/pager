@@ -12,7 +12,6 @@
 #'   `reference_docx:` R markdown field.
 #'
 #' @returns x (invisibly)
-#' @export
 #'
 #' @examples
 #' # create table
@@ -25,13 +24,20 @@
 #'     id = USUBJID,
 #'   )
 #'
-#' # save as docx
+#' # save as docx with flextable
 #' gtsummary::as_flex_table(tbl) |>
+#'   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
 #'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 #'
-#' # split the tqble and save paginatted table
+#' # save as docx with gt
+#' tbl |>
+#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+#'
+#' # split the table and save paginated table
 #' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
 #'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+#'
+#' @export
 save_with_rmarkdown <- function(x,
                                 path,
                                 reference_docx = get_reference_docx("portrait")) {
@@ -41,6 +47,9 @@ save_with_rmarkdown <- function(x,
   check_not_missing(path)
   check_string(path)
   check_string(reference_docx, allow_empty = TRUE)
+
+  # convert path to absolute path to ensure output is created in the correct location
+  path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
   check_class(x, cls = c(accepted_table_classes(), "list"))
   # check each object in the list is a table
@@ -60,9 +69,8 @@ save_with_rmarkdown <- function(x,
   # preparing for r markdown code vector ---------------------------------------
   pkg_to_attach <-
     ifelse(inherits(x, "list"), map(x, class), list(x)) |>
-    map_chr(class) |>
-    unlist() |>
-    intersect(accepted_table_classes())
+    map(\(xi) intersect(class(xi), accepted_table_classes())) |>
+    unlist()
   pkg_to_attach <- ifelse(pkg_to_attach == "gt_tbl", "gt", pkg_to_attach)
 
   # string of the yaml header
