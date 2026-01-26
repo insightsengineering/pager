@@ -7,9 +7,9 @@
 save_with_rmarkdown(x, path, reference_docx = get_reference_docx("portrait"))
 }
 \arguments{
-\item{x}{(\code{gtsummary}/\code{gt_tbl}/\code{flextable}/\code{list})\cr
-table object of class \code{'gtsummary'}, \code{'gt_tbl'} (gt table) or \code{'flextable'}, or a list
-of table objects.}
+\item{x}{(\code{gtsummary}/\code{gt_tbl}/\code{flextable}/\code{ggplot}/\code{grob}/\code{list})\cr
+object of class \code{'gtsummary'}, \code{'gt_tbl'} (gt table), \code{'flextable'}, \code{'ggplot'},
+\code{'grob'}, or a list of these objects.}
 
 \item{path}{(\code{path})\cr
 path to save file to, e.g. "rendered_table.docx"}
@@ -47,5 +47,10 @@ tbl |>
 # split the table and save paginated table
 gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+
+# save ggplot as docx
+library(ggplot2)
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+save_with_rmarkdown(p, path = tempfile(fileext = ".docx"))
 
 }

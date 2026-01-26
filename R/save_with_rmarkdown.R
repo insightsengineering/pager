@@ -56,11 +56,13 @@ save_with_rmarkdown <- function(x,
   # convert path to absolute path to ensure output is created in the correct location
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
-  check_class(x, cls = c(accepted_object_classes(), "list"))
+  accepted_obj <- c(accepted_plot_classes(), accepted_table_classes())
+
+  check_class(x, cls = c(accepted_obj, "list"))
   # check each object in the list is a table
-  if (inherits(x, "list") && some(x, ~!inherits(.x, accepted_object_classes()))) {
+  if (inherits(x, "list") && some(x, ~!inherits(.x, accepted_obj))) {
     cli::cli_abort(
-      "When argument {.arg x} is a list, each list element must be one of the following classes: {.cls {accepted_object_classes()}}.",
+      "When argument {.arg x} is a list, each list element must be one of the following classes: {.cls {accepted_obj}}.",
       call = get_cli_abort_call()
     )
   }
@@ -74,7 +76,7 @@ save_with_rmarkdown <- function(x,
   # preparing for r markdown code vector ---------------------------------------
   pkg_to_attach <-
     ifelse(inherits(x, "list"), map(x, class), list(x)) |>
-    map(\(xi) intersect(class(xi), accepted_object_classes())) |>
+    map(\(xi) intersect(class(xi), accepted_obj)) |>
     unlist()
   pkg_to_attach <-
     dplyr::case_match(
