@@ -1,4 +1,4 @@
-#' Accepted Object Classes
+#' Accepted Classes
 #'
 #' Return the acceptable classes for different types of output.
 #'
