@@ -1,5 +1,5 @@
 #' Accepted Object Classes
-#' 
+#'
 #' @returns character vector
 #' @name accepted_object_classes
 #' @examples
@@ -7,7 +7,7 @@
 NULL
 
 #' Accepted Table Classes
-#' 
+#'
 #' @rdname accepted_table_classes
 #' @export
 #'

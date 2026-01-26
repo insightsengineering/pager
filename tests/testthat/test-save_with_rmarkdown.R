@@ -1,6 +1,6 @@
 test_that("save_with_rmarkdown() works with flextable", {
   tbl <-
-    cards::ADAE[1:150,] |>
+    cards::ADAE[1:150, ] |>
     gtsummary::tbl_hierarchical(
       variables = c(AESOC, AETERM),
       by = TRTA,
@@ -30,7 +30,7 @@ test_that("save_with_rmarkdown() works with flextable", {
 
 test_that("save_with_rmarkdown() works with gtsummary table", {
   tbl <-
-    cards::ADAE[1:150,] |>
+    cards::ADAE[1:150, ] |>
     gtsummary::tbl_hierarchical(
       variables = c(AESOC, AETERM),
       by = TRTA,
@@ -59,7 +59,8 @@ test_that("save_with_rmarkdown() works with gtsummary table", {
 
 test_that("save_with_rmarkdown() works with figures", {
   library(ggplot2)
-  p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+  p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+    geom_point()
 
   file_path <- tempfile(fileext = ".docx")
   expect_error(

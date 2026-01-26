@@ -16,7 +16,7 @@
 #' @examples
 #' # create table
 #' tbl <-
-#'   cards::ADAE[1:150,] |>
+#'   cards::ADAE[1:150, ] |>
 #'   gtsummary::tbl_hierarchical(
 #'     variables = c(AESOC, AETERM),
 #'     by = TRTA,
@@ -39,7 +39,8 @@
 #'
 #' # save ggplot as docx
 #' library(ggplot2)
-#' p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+#' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point()
 #' save_with_rmarkdown(p, path = tempfile(fileext = ".docx"))
 #'
 #' @export
@@ -60,7 +61,7 @@ save_with_rmarkdown <- function(x,
 
   check_class(x, cls = c(accepted_obj, "list"))
   # check each object in the list is a table
-  if (inherits(x, "list") && some(x, ~!inherits(.x, accepted_obj))) {
+  if (inherits(x, "list") && some(x, ~ !inherits(.x, accepted_obj))) {
     cli::cli_abort(
       "When argument {.arg x} is a list, each list element must be one of the following classes: {.cls {accepted_obj}}.",
       call = get_cli_abort_call()
@@ -104,7 +105,8 @@ save_with_rmarkdown <- function(x,
     error = \(e) {
       cli::cli_abort(
         c("There was an error rendering the document.",
-          x = conditionMessage(e)),
+          x = conditionMessage(e)
+        ),
         call = get_cli_abort_call()
       )
     }

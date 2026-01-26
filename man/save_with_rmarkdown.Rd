@@ -27,7 +27,7 @@ Save Input via R markdown.
 \examples{
 # create table
 tbl <-
-  cards::ADAE[1:150,] |>
+  cards::ADAE[1:150, ] |>
   gtsummary::tbl_hierarchical(
     variables = c(AESOC, AETERM),
     by = TRTA,
@@ -50,7 +50,8 @@ gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
 
 # save ggplot as docx
 library(ggplot2)
-p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point()
 save_with_rmarkdown(p, path = tempfile(fileext = ".docx"))
 
 }

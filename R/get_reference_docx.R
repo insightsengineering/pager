@@ -29,12 +29,15 @@ get_reference_docx <- function(orientation = "portrait",
 
   df_ref_docx <-
     get_all_reference_docx() |>
-    dplyr::filter(.data$orientation %in% .env$orientation,
-                  .data$font %in% .env$font,
-                  .data$font_size %in% .env$font_size)
+    dplyr::filter(
+      .data$orientation %in% .env$orientation,
+      .data$font %in% .env$font,
+      .data$font_size %in% .env$font_size
+    )
   if (nrow(df_ref_docx) == 0L) {
     cli::cli_abort(c("No reference Word document selected.",
-                     i = "Run {.fun get_all_reference_docx} to print possible selections."))
+      i = "Run {.fun get_all_reference_docx} to print possible selections."
+    ))
   }
 
   df_ref_docx$path[1]
