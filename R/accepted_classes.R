@@ -3,12 +3,12 @@
 #' Return the acceptable classes for different types of output.
 #'
 #' @returns character vector
-#' @name accepted_object_classes
+#' @name accepted_classes
 NULL
 
 #' Accepted Table Classes
 #'
-#' @rdname accepted_object_classes
+#' @rdname accepted_classes
 #' @export
 #'
 #' @examples
@@ -19,7 +19,7 @@ accepted_table_classes <- function() {
 
 #' Accepted Plot Classes
 #'
-#' @rdname accepted_object_classes
+#' @rdname accepted_classes
 #' @export
 #'
 #' @examples
