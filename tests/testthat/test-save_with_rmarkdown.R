@@ -1,13 +1,14 @@
-test_that("save_with_rmarkdown() works with flextable", {
-  tbl <-
-    cards::ADAE[1:150,] |>
-    gtsummary::tbl_hierarchical(
-      variables = c(AESOC, AETERM),
-      by = TRTA,
-      denominator = cards::ADSL,
-      id = USUBJID,
-    )
+tbl <-
+  cards::ADAE[1:150, ] |>
+  gtsummary::tbl_hierarchical(
+    variables = c(AESOC, AETERM),
+    by = TRTA,
+    denominator = cards::ADSL,
+    id = USUBJID,
+  )
 
+
+test_that("save_with_rmarkdown() works with flextable", {
   # test with a single table
   file_path <- tempfile(fileext = ".docx")
   expect_error(
@@ -29,15 +30,6 @@ test_that("save_with_rmarkdown() works with flextable", {
 })
 
 test_that("save_with_rmarkdown() works with gtsummary table", {
-  tbl <-
-    cards::ADAE[1:150,] |>
-    gtsummary::tbl_hierarchical(
-      variables = c(AESOC, AETERM),
-      by = TRTA,
-      denominator = cards::ADSL,
-      id = USUBJID,
-    )
-
   # test with a single table
   file_path <- tempfile(fileext = ".docx")
   expect_error(
@@ -49,10 +41,49 @@ test_that("save_with_rmarkdown() works with gtsummary table", {
 
   # test with a list of tables
   file_path <- tempfile(fileext = ".docx")
+  temp_file_rmd <- tempfile(fileext = ".rmd")
   expect_error(
     gtsummary::tbl_split_by_rows(tbl, row_numbers = 20) |>
-      save_with_rmarkdown(, path = file_path),
+      save_with_rmarkdown(, path = file_path, temp_file_rmd = temp_file_rmd),
     NA
   )
+
   expect_true(file.exists(file_path))
+
+  # Read the contents of the temporary Rmd file
+  temp_file_rmd_content <- gsub(
+    pattern = "\"/tmp/[^\"]+\\.rds\"", # Regex: Match "/tmp/" followed by non-quotes until ".rds"
+    replacement = "\"path/to/data.rds\"", # The replacement string
+    x = readLines(temp_file_rmd)
+  )
+
+  # Snapshot test for the Rmd content
+  expect_snapshot(temp_file_rmd_content)
+})
+
+test_that("save_with_rmarkdown() fails with incorrect inputs", {
+  expect_snapshot(
+    save_with_rmarkdown(),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    save_with_rmarkdown(x = tbl),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    save_with_rmarkdown(x = tbl, path = 123),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    save_with_rmarkdown(x = "not_a_table", path = tempfile(fileext = ".docx")),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    save_with_rmarkdown(list("a", "b"), "a"),
+    error = TRUE
+  )
 })

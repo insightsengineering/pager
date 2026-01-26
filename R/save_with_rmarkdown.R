@@ -8,15 +8,17 @@
 #' @param path (`path`)\cr
 #'   path to save file to, e.g. "rendered_table.docx"
 #' @param reference_docx (`path`)\cr
-#'   Path to reference document that when not `NULL` is passed to the
+#'   path to reference document that when not `NULL` is passed to the
 #'   `reference_docx:` R markdown field.
+#' @param temp_file_rmd (`path`)\cr
+#'   path to temporary R markdown file used in rendering. Principally used for testing.
 #'
 #' @returns x (invisibly)
 #'
 #' @examples
 #' # create table
 #' tbl <-
-#'   cards::ADAE[1:150,] |>
+#'   cards::ADAE[1:150, ] |>
 #'   gtsummary::tbl_hierarchical(
 #'     variables = c(AESOC, AETERM),
 #'     by = TRTA,
@@ -40,7 +42,8 @@
 #' @export
 save_with_rmarkdown <- function(x,
                                 path,
-                                reference_docx = get_reference_docx("portrait")) {
+                                reference_docx = get_reference_docx("portrait"),
+                                temp_file_rmd = tempfile(fileext = ".rmd")) {
   set_cli_abort_call()
   # check inputs ---------------------------------------------------------------
   check_not_missing(x)
@@ -53,22 +56,24 @@ save_with_rmarkdown <- function(x,
 
   check_class(x, cls = c(accepted_table_classes(), "list"))
   # check each object in the list is a table
-  if (inherits(x, "list") && some(x, ~!inherits(.x, accepted_table_classes()))) {
+  if (inherits(x, "list") && some(x, ~ !inherits(.x, accepted_table_classes()))) {
     cli::cli_abort(
-      "When argument {.arg x} is a list, each list element must be one of the following classes: {.cls {accepted_table_classes()}}.",
+      c(
+        "When argument {.arg x} is a list, each list element must be one of the ",
+        "following classes: {.cls {accepted_table_classes()}}."
+      ),
       call = get_cli_abort_call()
     )
   }
 
   # set temp files -------------------------------------------------------------
   temp_file_x <- tempfile(fileext = ".rds")
-  temp_file_rmd <- tempfile(fileext = ".rmd")
   # save the input object to a tempfile (which will be loaded in the rmd file) -
   saveRDS(x, file = temp_file_x)
 
   # preparing for r markdown code vector ---------------------------------------
   pkg_to_attach <-
-    ifelse(inherits(x, "list"), map(x, class), list(x)) |>
+    ifelse(inherits(x, "list"), x, list(x)) |>
     map(\(xi) intersect(class(xi), accepted_table_classes())) |>
     unlist()
   pkg_to_attach <- ifelse(pkg_to_attach == "gt_tbl", "gt", pkg_to_attach)
@@ -88,12 +93,12 @@ save_with_rmarkdown <- function(x,
     error = \(e) {
       cli::cli_abort(
         c("There was an error rendering the document.",
-          x = conditionMessage(e)),
+          x = conditionMessage(e)
+        ),
         call = get_cli_abort_call()
       )
     }
   )
-
 
   invisible(x)
 }
