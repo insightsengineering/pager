@@ -2,13 +2,21 @@
 % Please edit documentation in R/accepted_object_classes.R
 \name{accepted_object_classes}
 \alias{accepted_object_classes}
+\alias{accepted_table_classes}
+\alias{accepted_plot_classes}
 \title{Accepted Object Classes}
+\usage{
+accepted_table_classes()
+
+accepted_plot_classes()
+}
 \value{
 character vector
 }
 \description{
-Accepted Object Classes
+Return the acceptable classes for different types of output.
 }
 \examples{
 accepted_table_classes()
+accepted_plot_classes()
 }
