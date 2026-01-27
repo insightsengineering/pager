@@ -21,6 +21,8 @@ Imports:
 Suggests: 
     cards,
     flextable,
+    ggplot2,
+    grid,
     gtsummary,
     gt,
     testthat (>= 3.0.0)
