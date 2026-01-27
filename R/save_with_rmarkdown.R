@@ -28,6 +28,12 @@
 #' gtsummary::as_flex_table(tbl) |>
 #'   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
 #'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+#' 
+#' # Specify column width manually with flextable
+#' gtsummary::as_flex_table(tbl) |>
+#'   flextable::width(j = 1, width = 2) |>
+#'   flextable::width(j = 2:3, width = 1.5) |>
+#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 #'
 #' # save as docx with gt
 #' tbl |>
