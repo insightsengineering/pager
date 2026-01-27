@@ -52,9 +52,9 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>(<code>gtsummary</code>/<code>gt_tbl</code>/<code>flextable</code>/<code>list</code>)<br>
-table object of class <code>'gtsummary'</code>, <code>'gt_tbl'</code> (gt table) or <code>'flextable'</code>, or a list
-of table objects.</p></dd>
+<dd><p>(<code>gtsummary</code>/<code>gt_tbl</code>/<code>flextable</code>/<code>ggplot</code>/<code>grob</code>/<code>list</code>)<br>
+object of class <code>'gtsummary'</code>, <code>'gt_tbl'</code> (gt table), <code>'flextable'</code>, <code>'ggplot'</code>,
+<code>'grob'</code>, or a list of these objects.</p></dd>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
@@ -77,7 +77,7 @@ Path to reference document that when not <code>NULL</code> is passed to the
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create table</span></span></span>
 <span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu">cards</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/adam.html" class="external-link">ADAE</a></span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>,<span class="op">]</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">cards</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/adam.html" class="external-link">ADAE</a></span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>, <span class="op">]</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_hierarchical.html" class="external-link">tbl_hierarchical</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AESOC</span>, <span class="va">AETERM</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    by <span class="op">=</span> <span class="va">TRTA</span>,</span></span>
@@ -89,17 +89,24 @@ Path to reference document that when not <code>NULL</code> is passed to the
 <span class="r-in"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/as_flex_table.html" class="external-link">as_flex_table</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">flextable</span><span class="fu">::</span><span class="fu"><a href="https://davidgohel.github.io/flextable/reference/set_table_properties.html" class="external-link">set_table_properties</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="st">"autofit"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># otherwise is going too wide</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_with_rmarkdown</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpbBUJrq/file1cce388b1fea.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpsCYFR8/file1d01217f5074.docx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># save as docx with gt</span></span></span>
 <span class="r-in"><span><span class="va">tbl</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_with_rmarkdown</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpbBUJrq/file1cce539409fa.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpsCYFR8/file1d017630d29f.docx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># split the table and save paginated table</span></span></span>
 <span class="r-in"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_split_by.html" class="external-link">tbl_split_by_rows</a></span><span class="op">(</span><span class="va">tbl</span>, row_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_with_rmarkdown</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpbBUJrq/file1cce2407fddf.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpsCYFR8/file1d0160d8b082.docx</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># save ggplot as docx</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wt</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">save_with_rmarkdown</span><span class="op">(</span><span class="va">p</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpsCYFR8/file1d013de71fb6.docx</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
