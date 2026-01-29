@@ -13,7 +13,8 @@
 #' @param temp_file_rmd (`path`)\cr
 #'   path to temporary R markdown file used in rendering. Principally used for testing.
 #'
-#' @returns x (invisibly)
+#' @returns (invisibly) a `string` corresponding to the content of the intermediate `.rmd` file that is rendered as
+#'   `.docx` or a message explaining the error encountered during rendering.
 #'
 #' @examples
 #' # create table
@@ -83,6 +84,7 @@ save_with_rmarkdown <- function(x,
   chr_rmarkdown_chunk <- create_chunks(ifelse(inherits(x, "list"), length(x), 1L))
 
   chr_rmarkdown <- c(chr_rmarkdown_yaml, "", chr_rmarkdown_chunk)
+  msg <- NULL
 
   # write file via R markdown --------------------------------------------------
   writeLines(chr_rmarkdown, con = temp_file_rmd)
@@ -93,12 +95,12 @@ save_with_rmarkdown <- function(x,
     error = \(e) {
       cli::cli_abort(
         c("There was an error rendering the document.",
-          x = conditionMessage(e)
+          msg = conditionMessage(e)
         ),
         call = get_cli_abort_call()
       )
     }
   )
 
-  invisible(x)
+  invisible(msg %||% chr_rmarkdown)
 }

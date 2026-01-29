@@ -27,7 +27,8 @@ path to reference document that when not \code{NULL} is passed to the
 path to temporary R markdown file used in rendering. Principally used for testing.}
 }
 \value{
-x (invisibly)
+(invisibly) a \code{string} corresponding to the content of the intermediate \code{.rmd} file that is rendered as
+\code{.docx} or a message explaining the error encountered during rendering.
 }
 \description{
 Save Input via R markdown.
