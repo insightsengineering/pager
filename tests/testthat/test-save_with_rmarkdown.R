@@ -41,24 +41,18 @@ test_that("save_with_rmarkdown() works with gtsummary table", {
 
   # test with a list of tables
   file_path <- tempfile(fileext = ".docx")
-  temp_file_rmd <- tempfile(fileext = ".rmd")
   expect_error(
-    gtsummary::tbl_split_by_rows(tbl, row_numbers = 20) |>
-      save_with_rmarkdown(, path = file_path, temp_file_rmd = temp_file_rmd),
+    res <- gtsummary::tbl_split_by_rows(tbl, row_numbers = 20) |>
+      save_with_rmarkdown(, path = file_path),
     NA
   )
 
   expect_true(file.exists(file_path))
 
   # Read the contents of the temporary Rmd file
-  temp_file_rmd_content <- gsub(
-    pattern = "\"/tmp/[^\"]+\\.rds\"", # Regex: Match "/tmp/" followed by non-quotes until ".rds"
-    replacement = "\"path/to/data.rds\"", # The replacement string
-    x = readLines(temp_file_rmd)
-  )
-
-  # Snapshot test for the Rmd content
-  expect_snapshot(temp_file_rmd_content)
+  expect_match(regexp = "*.reference_docx.*", res[4])
+  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
+  expect_match(regexp = "x[[2]]", res[22], fixed = TRUE)
 })
 
 test_that("save_with_rmarkdown() fails with incorrect inputs", {

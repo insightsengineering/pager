@@ -1,32 +1,3 @@
-# save_with_rmarkdown() works with gtsummary table
-
-    Code
-      temp_file_rmd_content
-    Output
-       [1] "---"                                                                                              
-       [2] "output:"                                                                                          
-       [3] "  word_document:"                                                                                 
-       [4] "    reference_docx: /home/melkiades/NEST/pager/inst/ref_docs/arial7_page-num-footer_portrait.docx"
-       [5] "---"                                                                                              
-       [6] ""                                                                                                 
-       [7] "```{r setup, include=FALSE}"                                                                      
-       [8] "knitr::opts_chunk$set(echo = FALSE, message = FALSE)"                                             
-       [9] "library(gtsummary)"                                                                               
-      [10] "x <- readRDS(file = \"path/to/data.rds\")"                                                        
-      [11] "if (!inherits(x, 'list')) x <- list(x)"                                                           
-      [12] "```"                                                                                              
-      [13] ""                                                                                                 
-      [14] ""                                                                                                 
-      [15] "```{r}"                                                                                           
-      [16] "x[[1]]"                                                                                           
-      [17] "```"                                                                                              
-      [18] ""                                                                                                 
-      [19] "\\newpage"                                                                                        
-      [20] ""                                                                                                 
-      [21] "```{r}"                                                                                           
-      [22] "x[[2]]"                                                                                           
-      [23] "```"                                                                                              
-
 # save_with_rmarkdown() fails with incorrect inputs
 
     Code
