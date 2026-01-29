@@ -10,8 +10,6 @@
 #' @param reference_docx (`path`)\cr
 #'   path to reference document that when not `NULL` is passed to the
 #'   `reference_docx:` R markdown field.
-#' @param temp_file_rmd (`path`)\cr
-#'   path to temporary R markdown file used in rendering. Principally used for testing.
 #'
 #' @returns (invisibly) a `string` corresponding to the content of the intermediate `.rmd` file that is rendered as
 #'   `.docx` or a message explaining the error encountered during rendering.
@@ -43,8 +41,7 @@
 #' @export
 save_with_rmarkdown <- function(x,
                                 path,
-                                reference_docx = get_reference_docx("portrait"),
-                                temp_file_rmd = tempfile(fileext = ".rmd")) {
+                                reference_docx = get_reference_docx("portrait")) {
   set_cli_abort_call()
   # check inputs ---------------------------------------------------------------
   check_not_missing(x)
@@ -54,6 +51,7 @@ save_with_rmarkdown <- function(x,
 
   # convert path to absolute path to ensure output is created in the correct location
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
+  temp_file_rmd = tempfile(fileext = ".rmd")
 
   check_class(x, cls = c(accepted_table_classes(), "list"))
   # check each object in the list is a table

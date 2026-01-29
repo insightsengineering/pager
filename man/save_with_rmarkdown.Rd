@@ -4,12 +4,7 @@
 \alias{save_with_rmarkdown}
 \title{Save as docx}
 \usage{
-save_with_rmarkdown(
-  x,
-  path,
-  reference_docx = get_reference_docx("portrait"),
-  temp_file_rmd = tempfile(fileext = ".rmd")
-)
+save_with_rmarkdown(x, path, reference_docx = get_reference_docx("portrait"))
 }
 \arguments{
 \item{x}{(\code{gtsummary}/\code{gt_tbl}/\code{flextable}/\code{list})\cr
@@ -22,9 +17,6 @@ path to save file to, e.g. "rendered_table.docx"}
 \item{reference_docx}{(\code{path})\cr
 path to reference document that when not \code{NULL} is passed to the
 \verb{reference_docx:} R markdown field.}
-
-\item{temp_file_rmd}{(\code{path})\cr
-path to temporary R markdown file used in rendering. Principally used for testing.}
 }
 \value{
 (invisibly) a \code{string} corresponding to the content of the intermediate \code{.rmd} file that is rendered as
