@@ -1,6 +1,6 @@
 #' Save as docx
 #'
-#' Save Input via R markdown.
+#' Save Input in a `.docx` file via R markdown.
 #'
 #' @param x (`gtsummary`/`gt_tbl`/`flextable`/`list`)\cr
 #'   table object of class `'gtsummary'`, `'gt_tbl'` (gt table) or `'flextable'`, or a list
@@ -12,7 +12,7 @@
 #'   `reference_docx:` R markdown field.
 #'
 #' @returns (invisibly) a `string` corresponding to the content of the intermediate `.rmd` file that is rendered as
-#'   `.docx` or a message explaining the error encountered during rendering.
+#'   `.docx`. 
 #'
 #' @examples
 #' # create table
@@ -93,12 +93,12 @@ save_with_rmarkdown <- function(x,
     error = \(e) {
       cli::cli_abort(
         c("There was an error rendering the document.",
-          msg = conditionMessage(e)
+          x = conditionMessage(e)
         ),
         call = get_cli_abort_call()
       )
     }
   )
 
-  invisible(msg %||% chr_rmarkdown)
+  invisible(chr_rmarkdown)
 }

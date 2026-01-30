@@ -20,10 +20,10 @@ path to reference document that when not \code{NULL} is passed to the
 }
 \value{
 (invisibly) a \code{string} corresponding to the content of the intermediate \code{.rmd} file that is rendered as
-\code{.docx} or a message explaining the error encountered during rendering.
+\code{.docx}.
 }
 \description{
-Save Input via R markdown.
+Save Input in a \code{.docx} file via R markdown.
 }
 \examples{
 # create table
