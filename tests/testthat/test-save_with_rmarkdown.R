@@ -81,3 +81,33 @@ test_that("save_with_rmarkdown() fails with incorrect inputs", {
     error = TRUE
   )
 })
+
+test_that("save_with_rmarkdown() works with figures", {
+  library(ggplot2)
+  p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+    geom_point()
+
+  file_path <- tempfile(fileext = ".docx")
+  expect_error(
+    save_with_rmarkdown(p1, path = file_path),
+    NA
+  )
+  expect_true(file.exists(file_path))
+
+  # test with grid object
+  p2 <- grid::circleGrob()
+  file_path <- tempfile(fileext = ".docx")
+  expect_error(
+    save_with_rmarkdown(p2, path = file_path),
+    NA
+  )
+  expect_true(file.exists(file_path))
+
+  # list of mixed objects
+  file_path <- tempfile(fileext = ".docx")
+  expect_error(
+    list(p1, p2) |> save_with_rmarkdown(path = file_path),
+    NA
+  )
+  expect_true(file.exists(file_path))
+})

@@ -24,7 +24,8 @@
 #' ) |>
 #'   cat(sep = "\n")
 create_yaml_header <- function(object_path, pkg_to_attach, reference_docx) {
-  c("---",
+  c(
+    "---",
     "output:",
     "  word_document:",
     if (!is_empty(reference_docx)) glue::glue("    reference_docx: {reference_docx}"),
@@ -36,5 +37,6 @@ create_yaml_header <- function(object_path, pkg_to_attach, reference_docx) {
     paste("x <-", rlang::call2("readRDS", file = as.character(object_path)) |> rlang::expr_deparse(width = Inf)),
     "if (!inherits(x, 'list')) x <- list(x)",
     "```",
-    "")
+    ""
+  )
 }

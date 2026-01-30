@@ -2,9 +2,9 @@
 #'
 #' Save Input in a `.docx` file via R markdown.
 #'
-#' @param x (`gtsummary`/`gt_tbl`/`flextable`/`list`)\cr
-#'   table object of class `'gtsummary'`, `'gt_tbl'` (gt table) or `'flextable'`, or a list
-#'   of table objects.
+#' @param x (`gtsummary`/`gt_tbl`/`flextable`/`ggplot`/`grob`/`list`)\cr
+#'   object of class `'gtsummary'`, `'gt_tbl'` (gt table), `'flextable'`, `'ggplot'`,
+#'   `'grob'`, or a list of these objects.
 #' @param path (`path`)\cr
 #'   path to save file to, e.g. "rendered_table.docx"
 #' @param reference_docx (`path`)\cr
@@ -38,6 +38,12 @@
 #' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
 #'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 #'
+#' # save ggplot as docx
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point()
+#' save_with_rmarkdown(p, path = tempfile(fileext = ".docx"))
+#'
 #' @export
 save_with_rmarkdown <- function(x,
                                 path,
@@ -53,14 +59,13 @@ save_with_rmarkdown <- function(x,
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
   temp_file_rmd = tempfile(fileext = ".rmd")
 
-  check_class(x, cls = c(accepted_table_classes(), "list"))
+  accepted_obj <- c(accepted_plot_classes(), accepted_table_classes())
+
+  check_class(x, cls = c(accepted_obj, "list"))
   # check each object in the list is a table
-  if (inherits(x, "list") && some(x, ~ !inherits(.x, accepted_table_classes()))) {
+  if (inherits(x, "list") && some(x, ~ !inherits(.x, accepted_obj))) {
     cli::cli_abort(
-      c(
-        "When argument {.arg x} is a list, each list element must be one of the ",
-        "following classes: {.cls {accepted_table_classes()}}."
-      ),
+      "When argument {.arg x} is a list, each list element must be one of the following classes: {.cls {accepted_obj}}.",
       call = get_cli_abort_call()
     )
   }
@@ -72,10 +77,19 @@ save_with_rmarkdown <- function(x,
 
   # preparing for r markdown code vector ---------------------------------------
   pkg_to_attach <-
-    ifelse(inherits(x, "list"), x, list(x)) |>
-    map(\(xi) intersect(class(xi), accepted_table_classes())) |>
+    ifelse(inherits(x, "list"), map(x, class), list(x)) |>
+    map(\(xi) intersect(class(xi), accepted_obj)) |>
     unlist()
-  pkg_to_attach <- ifelse(pkg_to_attach == "gt_tbl", "gt", pkg_to_attach)
+  pkg_to_attach <-
+    dplyr::case_match(
+      pkg_to_attach,
+      "gt_tbl" ~ "gt",
+      "gg" ~ "ggplot2",
+      "ggplot" ~ "ggplot2",
+      "grob" ~ "grid",
+      .default = pkg_to_attach
+    ) |>
+    unique()
 
   # string of the yaml header
   chr_rmarkdown_yaml <- create_yaml_header(temp_file_x, pkg_to_attach, reference_docx)
