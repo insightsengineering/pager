@@ -12,7 +12,7 @@
 #'   `reference_docx:` R markdown field.
 #'
 #' @returns (invisibly) a `string` corresponding to the content of the intermediate `.rmd` file that is rendered as
-#'   `.docx`. 
+#'   `.docx`.
 #'
 #' @examples
 #' # create table
@@ -57,7 +57,6 @@ save_with_rmarkdown <- function(x,
 
   # convert path to absolute path to ensure output is created in the correct location
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
-  temp_file_rmd = tempfile(fileext = ".rmd")
 
   accepted_obj <- c(accepted_plot_classes(), accepted_table_classes())
 
@@ -72,6 +71,7 @@ save_with_rmarkdown <- function(x,
 
   # set temp files -------------------------------------------------------------
   temp_file_x <- tempfile(fileext = ".rds")
+  temp_file_rmd <- tempfile(fileext = ".rmd")
   # save the input object to a tempfile (which will be loaded in the rmd file) -
   saveRDS(x, file = temp_file_x)
 
