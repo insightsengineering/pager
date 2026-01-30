@@ -77,9 +77,10 @@ save_with_rmarkdown <- function(x,
 
   # preparing for r markdown code vector ---------------------------------------
   pkg_to_attach <-
-    ifelse(inherits(x, "list"), map(x, class), list(x)) |>
-    map(\(xi) intersect(class(xi), accepted_obj)) |>
-    unlist()
+    ifelse(inherits(x, "list"), map(x, class), list(class(x))) |>
+    unlist() |>
+    intersect(x = _, accepted_obj)
+
   pkg_to_attach <-
     dplyr::case_match(
       pkg_to_attach,

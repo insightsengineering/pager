@@ -33,11 +33,15 @@ test_that("save_with_rmarkdown() works with gtsummary table", {
   # test with a single table
   file_path <- tempfile(fileext = ".docx")
   expect_error(
-    tbl |>
+    res <- tbl |>
       save_with_rmarkdown(, path = file_path),
     NA
   )
   expect_true(file.exists(file_path))
+
+  expect_match(regexp = "*.reference_docx.*", res[4])
+  expect_match(regexp = "library(gtsummary)", res[9], fixed = TRUE)
+  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
 
   # test with a list of tables
   file_path <- tempfile(fileext = ".docx")
@@ -51,6 +55,7 @@ test_that("save_with_rmarkdown() works with gtsummary table", {
 
   # Read the contents of the temporary Rmd file
   expect_match(regexp = "*.reference_docx.*", res[4])
+  expect_match(regexp = "library(gtsummary)", res[9], fixed = TRUE)
   expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
   expect_match(regexp = "x[[2]]", res[22], fixed = TRUE)
 })

@@ -28,7 +28,7 @@
       save_with_rmarkdown(x = "not_a_table", path = tempfile(fileext = ".docx"))
     Condition
       Error in `save_with_rmarkdown()`:
-      ! The `x` argument must be class <gtsummary/gt_tbl/flextable/list>, not a string.
+      ! The `x` argument must be class <gg/ggplot/grob/gtsummary/gt_tbl/flextable/list>, not a string.
 
 ---
 
@@ -36,6 +36,5 @@
       save_with_rmarkdown(list("a", "b"), "a")
     Condition
       Error in `save_with_rmarkdown()`:
-      ! When argument `x` is a list, each list element must be one of the
-      following classes: <gtsummary/gt_tbl/flextable>.
+      ! When argument `x` is a list, each list element must be one of the following classes: <gg/ggplot/grob/gtsummary/gt_tbl/flextable>.
 
