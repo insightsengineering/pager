@@ -97,7 +97,6 @@ save_with_rmarkdown <- function(x,
   chr_rmarkdown_chunk <- create_chunks(ifelse(inherits(x, "list"), length(x), 1L))
 
   chr_rmarkdown <- c(chr_rmarkdown_yaml, "", chr_rmarkdown_chunk)
-  msg <- NULL
 
   # write file via R markdown --------------------------------------------------
   writeLines(chr_rmarkdown, con = temp_file_rmd)
