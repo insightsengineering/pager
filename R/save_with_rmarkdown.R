@@ -1,6 +1,6 @@
 #' Save as docx
 #'
-#' Save Input via R markdown.
+#' Save Input in a `.docx` file via R markdown.
 #'
 #' @param x (`gtsummary`/`gt_tbl`/`flextable`/`ggplot`/`grob`/`list`)\cr
 #'   object of class `'gtsummary'`, `'gt_tbl'` (gt table), `'flextable'`, `'ggplot'`,
@@ -8,10 +8,11 @@
 #' @param path (`path`)\cr
 #'   path to save file to, e.g. "rendered_table.docx"
 #' @param reference_docx (`path`)\cr
-#'   Path to reference document that when not `NULL` is passed to the
+#'   path to reference document that when not `NULL` is passed to the
 #'   `reference_docx:` R markdown field.
 #'
-#' @returns x (invisibly)
+#' @returns (invisibly) a `string` corresponding to the content of the intermediate `.rmd` file that is rendered as
+#'   `.docx`.
 #'
 #' @examples
 #' # create table
@@ -76,9 +77,10 @@ save_with_rmarkdown <- function(x,
 
   # preparing for r markdown code vector ---------------------------------------
   pkg_to_attach <-
-    ifelse(inherits(x, "list"), map(x, class), list(x)) |>
-    map(\(xi) intersect(class(xi), accepted_obj)) |>
-    unlist()
+    ifelse(inherits(x, "list"), map(x, class), list(class(x))) |>
+    unlist() |>
+    intersect(x = _, accepted_obj)
+
   pkg_to_attach <-
     dplyr::case_match(
       pkg_to_attach,
@@ -112,6 +114,5 @@ save_with_rmarkdown <- function(x,
     }
   )
 
-
-  invisible(x)
+  invisible(chr_rmarkdown)
 }
