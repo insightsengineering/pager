@@ -15,14 +15,15 @@ object of class \code{'gtsummary'}, \code{'gt_tbl'} (gt table), \code{'flextable
 path to save file to, e.g. "rendered_table.docx"}
 
 \item{reference_docx}{(\code{path})\cr
-Path to reference document that when not \code{NULL} is passed to the
+path to reference document that when not \code{NULL} is passed to the
 \verb{reference_docx:} R markdown field.}
 }
 \value{
-x (invisibly)
+(invisibly) a \code{string} corresponding to the content of the intermediate \code{.rmd} file that is rendered as
+\code{.docx}.
 }
 \description{
-Save Input via R markdown.
+Save Input in a \code{.docx} file via R markdown.
 }
 \examples{
 # create table
