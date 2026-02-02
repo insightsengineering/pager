@@ -35,7 +35,7 @@ create_yaml_header <- function(object_path, pkg_to_attach, reference_docx) {
     "knitr::opts_chunk$set(echo = FALSE, message = FALSE)",
     paste0("library(", pkg_to_attach, ")"),
     paste("x <-", rlang::call2("readRDS", file = as.character(object_path)) |> rlang::expr_deparse(width = Inf)),
-    "if (!inherits(x, 'list')) x <- list(x)",
+    "if (!is_simple_list(x)) x <- list(x)",
     "```",
     ""
   )

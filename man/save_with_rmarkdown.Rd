@@ -49,6 +49,15 @@ gtsummary::as_flex_table(tbl) |>
 
 # save as docx with gt
 tbl |>
+  gtsummary::as_gt() |>
+  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+
+# Specify column width manually with gt
+tbl |>
+  gtsummary::as_gt() |>
+  gt::cols_width(
+    tidyselect::everything() ~ gt::px(100)
+  ) |>
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 
 # split the table and save paginated table

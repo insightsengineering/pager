@@ -87,6 +87,19 @@ test_that("save_with_rmarkdown() fails with incorrect inputs", {
   )
 })
 
+test_that("save_with_rmarkdown() works with gt_tbl-list", {
+  file_path <- tempfile(fileext = ".docx")
+  expect_error(
+    gtsummary::as_gt(tbl) |>
+      gt::cols_width(
+        tidyselect::everything() ~ gt::px(100)
+      ) |>
+      save_with_rmarkdown(, path = file_path),
+    NA
+  )
+  expect_true(file.exists(file_path))
+})
+
 test_that("save_with_rmarkdown() works with figures", {
   library(ggplot2)
   p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
