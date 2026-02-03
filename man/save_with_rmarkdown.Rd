@@ -41,8 +41,23 @@ gtsummary::as_flex_table(tbl) |>
   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 
+# Specify column width manually with flextable
+gtsummary::as_flex_table(tbl) |>
+  flextable::width(j = 1, width = 2) |>
+  flextable::width(j = 2:3, width = 1.5) |>
+  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+
 # save as docx with gt
 tbl |>
+  gtsummary::as_gt() |>
+  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+
+# Specify column width manually with gt
+tbl |>
+  gtsummary::as_gt() |>
+  gt::cols_width(
+    dplyr::everything() ~ gt::px(100)
+  ) |>
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 
 # split the table and save paginated table

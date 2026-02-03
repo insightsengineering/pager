@@ -30,8 +30,23 @@
 #'   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
 #'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 #'
+#' # Specify column width manually with flextable
+#' gtsummary::as_flex_table(tbl) |>
+#'   flextable::width(j = 1, width = 2) |>
+#'   flextable::width(j = 2:3, width = 1.5) |>
+#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+#'
 #' # save as docx with gt
 #' tbl |>
+#'   gtsummary::as_gt() |>
+#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+#'
+#' # Specify column width manually with gt
+#' tbl |>
+#'   gtsummary::as_gt() |>
+#'   gt::cols_width(
+#'     dplyr::everything() ~ gt::px(100)
+#'   ) |>
 #'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 #'
 #' # split the table and save paginated table
@@ -62,7 +77,7 @@ save_with_rmarkdown <- function(x,
 
   check_class(x, cls = c(accepted_obj, "list"))
   # check each object in the list is a table
-  if (inherits(x, "list") && some(x, ~ !inherits(.x, accepted_obj))) {
+  if (is_simple_list(x) && some(x, ~ !inherits(.x, accepted_obj))) {
     cli::cli_abort(
       "When argument {.arg x} is a list, each list element must be one of the following classes: {.cls {accepted_obj}}.",
       call = get_cli_abort_call()
@@ -77,13 +92,14 @@ save_with_rmarkdown <- function(x,
 
   # preparing for r markdown code vector ---------------------------------------
   pkg_to_attach <-
-    ifelse(inherits(x, "list"), map(x, class), list(class(x))) |>
+    ifelse(is_simple_list(x), map(x, class), list(class(x))) |>
     unlist() |>
     intersect(x = _, accepted_obj)
 
   pkg_to_attach <-
     dplyr::case_match(
       pkg_to_attach,
+      "gtsummary" ~ "gtsummary",
       "gt_tbl" ~ "gt",
       "gg" ~ "ggplot2",
       "ggplot" ~ "ggplot2",
@@ -94,7 +110,7 @@ save_with_rmarkdown <- function(x,
 
   # string of the yaml header
   chr_rmarkdown_yaml <- create_yaml_header(temp_file_x, pkg_to_attach, reference_docx)
-  chr_rmarkdown_chunk <- create_chunks(ifelse(inherits(x, "list"), length(x), 1L))
+  chr_rmarkdown_chunk <- create_chunks(ifelse(is_simple_list(x), length(x), 1L))
 
   chr_rmarkdown <- c(chr_rmarkdown_yaml, "", chr_rmarkdown_chunk)
 
@@ -115,4 +131,9 @@ save_with_rmarkdown <- function(x,
   )
 
   invisible(chr_rmarkdown)
+}
+
+
+is_simple_list <- function(x) {
+  inherits(x, "list") && !inherits(x, "gt_tbl")
 }
