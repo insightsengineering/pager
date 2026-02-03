@@ -56,7 +56,7 @@ tbl |>
 tbl |>
   gtsummary::as_gt() |>
   gt::cols_width(
-    tidyselect::everything() ~ gt::px(100)
+    dplyr::everything() ~ gt::px(100)
   ) |>
   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
 

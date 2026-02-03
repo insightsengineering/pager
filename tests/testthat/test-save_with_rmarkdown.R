@@ -92,7 +92,7 @@ test_that("save_with_rmarkdown() works with gt_tbl-list", {
   expect_error(
     gtsummary::as_gt(tbl) |>
       gt::cols_width(
-        tidyselect::everything() ~ gt::px(100)
+        dplyr::everything() ~ gt::px(100)
       ) |>
       save_with_rmarkdown(, path = file_path),
     NA
