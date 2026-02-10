@@ -1,0 +1,144 @@
+---
+title: "Customized Document"
+author: "Your Name"
+output:
+  word_document
+---
+
+<!-- Embed CSS for Word output -->
+<style>
+  /* Set default font size for the entire document */
+  body {
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Customize headings */
+  h1 {
+    font-size: 18pt;
+    color: #2c3e50;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 16pt;
+    color: #3498db;
+    font-weight: bold;
+  }
+
+  h3 {
+    font-size: 14pt;
+    color: #e74c3c;
+    font-style: italic;
+  }
+
+  /* Customize paragraphs */
+  p {
+    font-size: 11pt;
+    line-height: 1.5;
+    text-align: justify;
+  }
+
+  /* Customize lists */
+  ul, ol {
+    font-size: 11pt;
+    margin-left: 20pt;
+  }
+
+  /* Customize tables */
+  table {
+    font-size: 14pt;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8pt;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  /* Customize code blocks */
+  pre {
+    font-size: 10pt;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 10pt;
+    overflow-x: auto;
+  }
+
+  /* Customize blockquotes */
+  blockquote {
+    font-size: 11pt;
+    font-style: italic;
+    border-left: 3px solid #3498db;
+    padding-left: 10pt;
+    margin-left: 0;
+    color: #7f8c8d;
+  }
+</style>
+
+# This is a Heading 1
+
+This is a paragraph with customized font size and alignment. The font size is set to 11pt, and the text is justified.
+
+## This is a Heading 2
+
+This is another paragraph. The font family is set to Arial.
+
+### This is a Heading 3
+
+This is a paragraph with a different font size and style.
+
+#### Unordered List Example
+- Item 1
+- Item 2
+- Item 3
+
+#### Ordered List Example
+1. First item
+2. Second item
+3. Third item
+
+#### Table Example
+
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Row 1    | Data     | Data     |
+| Row 2    | Data     | Data     |
+
+#### Code Block Example
+```r
+# This is an R code block
+x <- 1:10
+print(x)
+```
+
+#### Executed code block
+```{r}
+# This code will be executed and the output will be shown
+summary(cars)
+```
+
+#### gtsummary Table Example
+```{r}
+# Create a simple table using gtsummary
+library(gtsummary)
+
+# Create a sample dataset
+data <- data.frame(
+  age = c(25, 30, 35, 40, 45),
+  gender = c("Male", "Female", "Male", "Female", "Male"),
+  bmi = c(22.5, 24.1, 26.8, 23.7, 28.2),
+  cholesterol = c(180, 195, 210, 190, 220)
+)
+
+# Create a gtsummary table
+tbl_summary(data, by = "gender")
+```
