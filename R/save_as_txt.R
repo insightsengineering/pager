@@ -16,15 +16,7 @@ create_yaml_header_txt <- function(object_path, pkg_to_attach) {
     paste("x <-", rlang::call2("readRDS", file = as.character(object_path)) |> rlang::expr_deparse(width = Inf)),
     "if (!inherits(x, 'list') || inherits(x, 'gt_tbl')) x <- list(x)",
     "as_kable_txt <- function(obj) {",
-    "  if (inherits(obj, 'gtsummary')) {",
-    "    gtsummary::as_kable(obj)",
-    "  } else if (inherits(obj, 'gt_tbl')) {",
-    "    knitr::kable(gt:::dt_data_get(obj))",
-    "  } else if (inherits(obj, 'flextable')) {",
-    "    knitr::kable(obj$body$dataset)",
-    "  } else {",
-    "    print(obj)",
-    "  }",
+    "  knitr::kable(gt:::dt_data_get(obj))",
     "}",
     "```",
     ""
@@ -77,13 +69,11 @@ save_txt_with_rmarkdown <- function(x,
   # convert path to absolute path to ensure output is created in the correct location
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
-  # txt output only supports table classes (plots cannot be rendered as text)
-  accepted_obj <- accepted_table_classes()
-
-  check_class(x, cls = c(accepted_obj, "list"))
-  if (is_simple_list(x) && some(x, ~ !inherits(.x, accepted_obj))) {
+  # txt output only supports gt_tbl objects
+  check_class(x, cls = c("gt_tbl", "list"))
+  if (is_simple_list(x) && some(x, ~ !inherits(.x, "gt_tbl"))) {
     cli::cli_abort(
-      "When argument {.arg x} is a list, each list element must be one of the following classes: {.cls {accepted_obj}}.",
+      "When argument {.arg x} is a list, each list element must be of class {.cls gt_tbl}.",
       call = get_cli_abort_call()
     )
   }
@@ -94,20 +84,8 @@ save_txt_with_rmarkdown <- function(x,
   # save the input object to a tempfile (which will be loaded in the rmd file) -
   saveRDS(x, file = temp_file_x)
 
-  # preparing for r markdown code vector ---------------------------------------
-  pkg_to_attach <-
-    ifelse(is_simple_list(x), map(x, class), list(class(x))) |>
-    unlist() |>
-    intersect(x = _, accepted_obj)
-
-  pkg_to_attach <-
-    dplyr::case_match(
-      pkg_to_attach,
-      "gtsummary" ~ "gtsummary",
-      "gt_tbl" ~ "gt",
-      .default = pkg_to_attach
-    ) |>
-    unique()
+  # gt package is always attached for gt_tbl objects
+  pkg_to_attach <- "gt"
 
   # string of the yaml header and chunks
   chr_rmarkdown_yaml <- create_yaml_header_txt(temp_file_x, pkg_to_attach)
@@ -142,12 +120,11 @@ save_txt_with_rmarkdown <- function(x,
 
 #' Save as txt (plain text / Markdown)
 #'
-#' Save table input as a plain text (Markdown-formatted) file via R markdown.
-#' Plots are not supported for plain text output.
+#' Save a `gt_tbl` object as a plain text (Markdown-formatted) file via R markdown.
+#' Only `gt_tbl` objects (from the gt package) are supported for plain text output.
 #'
-#' @param x (`gtsummary`/`gt_tbl`/`flextable`/`list`)\cr
-#'   object of class `'gtsummary'`, `'gt_tbl'` (gt table), `'flextable'`,
-#'   or a list of these objects.
+#' @param x (`gt_tbl`/`list`)\cr
+#'   object of class `'gt_tbl'` (gt table), or a list of `'gt_tbl'` objects.
 #' @param path (`path`)\cr
 #'   path to save file to, e.g. `"rendered_table.txt"` or `"rendered_table.md"`.
 #' @param encoding (`string`)\cr
@@ -157,31 +134,15 @@ save_txt_with_rmarkdown <- function(x,
 #'   `.rmd` file that is rendered.
 #'
 #' @examples
-#' # create table
-#' tbl <-
-#'   cards::ADAE[1:150, ] |>
-#'   gtsummary::tbl_hierarchical(
-#'     variables = c(AESOC, AETERM),
-#'     by = TRTA,
-#'     denominator = cards::ADSL,
-#'     id = USUBJID,
-#'   )
+#' # create gt table
+#' tbl <- gt::gt(head(mtcars))
 #'
-#' # save as txt with gtsummary
+#' # save as txt
 #' tbl |>
 #'   save_txt(path = tempfile(fileext = ".txt"))
 #'
-#' # save as txt with flextable
-#' gtsummary::as_flex_table(tbl) |>
-#'   save_txt(path = tempfile(fileext = ".txt"))
-#'
-#' # save as txt with gt
-#' tbl |>
-#'   gtsummary::as_gt() |>
-#'   save_txt(path = tempfile(fileext = ".txt"))
-#'
-#' # save a paginated table as txt
-#' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+#' # save a list of gt tables as txt
+#' list(gt::gt(head(mtcars)), gt::gt(tail(mtcars))) |>
 #'   save_txt(path = tempfile(fileext = ".txt"))
 #'
 #' @export
