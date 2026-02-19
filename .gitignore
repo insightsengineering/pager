@@ -2,3 +2,5 @@
 
 # don't commit temp MS Office files
 ~$*
+
+/.quarto/

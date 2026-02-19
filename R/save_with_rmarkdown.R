@@ -1,69 +1,13 @@
-#' Save as docx
+#' Save as docx via R Markdown (internal)
 #'
-#' Save Input in a `.docx` file via R markdown.
+#' Internal function that saves input in a `.docx` file via R markdown.
+#' Use [save_docx()] instead.
 #'
-#' @param x (`gtsummary`/`gt_tbl`/`flextable`/`ggplot`/`grob`/`list`)\cr
-#'   object of class `'gtsummary'`, `'gt_tbl'` (gt table), `'flextable'`, `'ggplot'`,
-#'   `'grob'`, or a list of these objects.
-#' @param path (`path`)\cr
-#'   path to save file to, e.g. "rendered_table.docx"
-#' @param reference_docx (`path`)\cr
-#'   path to reference document that when not `NULL` is passed to the
-#'   `reference_docx:` R markdown field.
-#'
-#' @returns (invisibly) a `string` corresponding to the content of the intermediate `.rmd` file that is rendered as
-#'   `.docx`.
-#'
-#' @examples
-#' # create table
-#' tbl <-
-#'   cards::ADAE[1:150, ] |>
-#'   gtsummary::tbl_hierarchical(
-#'     variables = c(AESOC, AETERM),
-#'     by = TRTA,
-#'     denominator = cards::ADSL,
-#'     id = USUBJID,
-#'   )
-#'
-#' # save as docx with flextable
-#' gtsummary::as_flex_table(tbl) |>
-#'   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
-#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
-#'
-#' # Specify column width manually with flextable
-#' gtsummary::as_flex_table(tbl) |>
-#'   flextable::width(j = 1, width = 2) |>
-#'   flextable::width(j = 2:3, width = 1.5) |>
-#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
-#'
-#' # save as docx with gt
-#' tbl |>
-#'   gtsummary::as_gt() |>
-#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
-#'
-#' # Specify column width manually with gt
-#' tbl |>
-#'   gtsummary::as_gt() |>
-#'   gt::cols_width(
-#'     dplyr::everything() ~ gt::px(100)
-#'   ) |>
-#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
-#'
-#' # split the table and save paginated table
-#' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
-#'   save_with_rmarkdown(path = tempfile(fileext = ".docx"))
-#'
-#' # save ggplot as docx
-#' library(ggplot2)
-#' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
-#'   geom_point()
-#' save_with_rmarkdown(p, path = tempfile(fileext = ".docx"))
-#'
-#' @export
-save_with_rmarkdown <- function(x,
+#' @inheritParams save_docx
+#' @keywords internal
+save_docx_with_rmarkdown <- function(x,
                                 path,
                                 reference_docx = get_reference_docx("portrait")) {
-  set_cli_abort_call()
   # check inputs ---------------------------------------------------------------
   check_not_missing(x)
   check_not_missing(path)
@@ -136,4 +80,71 @@ save_with_rmarkdown <- function(x,
 
 is_simple_list <- function(x) {
   inherits(x, "list") && !inherits(x, "gt_tbl")
+}
+
+#' Save as docx
+#'
+#' Save input in a `.docx` file via R markdown.
+#'
+#' @param x (`gtsummary`/`gt_tbl`/`flextable`/`ggplot`/`grob`/`list`)\cr
+#'   object of class `'gtsummary'`, `'gt_tbl'` (gt table), `'flextable'`, `'ggplot'`,
+#'   `'grob'`, or a list of these objects.
+#' @param path (`path`)\cr
+#'   path to save file to, e.g. "rendered_table.docx"
+#' @param reference_docx (`path`)\cr
+#'   path to reference document that when not `NULL` is passed to the
+#'   `reference_docx:` R markdown field.
+#'
+#' @returns (invisibly) a `string` corresponding to the content of the intermediate `.rmd` file that is rendered as
+#'   `.docx`.
+#'
+#' @examples
+#' # create table
+#' tbl <-
+#'   cards::ADAE[1:150, ] |>
+#'   gtsummary::tbl_hierarchical(
+#'     variables = c(AESOC, AETERM),
+#'     by = TRTA,
+#'     denominator = cards::ADSL,
+#'     id = USUBJID,
+#'   )
+#'
+#' # save as docx with flextable
+#' gtsummary::as_flex_table(tbl) |>
+#'   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
+#'   save_docx(path = tempfile(fileext = ".docx"))
+#'
+#' # Specify column width manually with flextable
+#' gtsummary::as_flex_table(tbl) |>
+#'   flextable::width(j = 1, width = 2) |>
+#'   flextable::width(j = 2:3, width = 1.5) |>
+#'   save_docx(path = tempfile(fileext = ".docx"))
+#'
+#' # save as docx with gt
+#' tbl |>
+#'   gtsummary::as_gt() |>
+#'   save_docx(path = tempfile(fileext = ".docx"))
+#'
+#' # Specify column width manually with gt
+#' tbl |>
+#'   gtsummary::as_gt() |>
+#'   gt::cols_width(
+#'     dplyr::everything() ~ gt::px(100)
+#'   ) |>
+#'   save_docx(path = tempfile(fileext = ".docx"))
+#'
+#' # split the table and save paginated table
+#' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+#'   save_docx(path = tempfile(fileext = ".docx"))
+#'
+#' # save ggplot as docx
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point()
+#' save_docx(p, path = tempfile(fileext = ".docx"))
+#'
+#' @export
+save_docx <- function(x, path, reference_docx = get_reference_docx("portrait")) {
+  set_cli_abort_call()
+  save_docx_with_rmarkdown(x = x, path = path, reference_docx = reference_docx)
 }
