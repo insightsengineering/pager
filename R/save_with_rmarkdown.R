@@ -41,14 +41,13 @@ save_docx_with_rmarkdown <- function(x,
     intersect(x = _, accepted_obj)
 
   pkg_to_attach <-
-    dplyr::case_match(
+    dplyr::recode_values(
       pkg_to_attach,
       "gtsummary" ~ "gtsummary",
-      "gt_tbl" ~ "gt",
-      "gg" ~ "ggplot2",
-      "ggplot" ~ "ggplot2",
-      "grob" ~ "grid",
-      .default = pkg_to_attach
+      "gt_tbl"    ~ "gt",
+      "gg"        ~ "ggplot2",
+      "ggplot"    ~ "ggplot2",
+      "grob"      ~ "grid"
     ) |>
     unique()
 
