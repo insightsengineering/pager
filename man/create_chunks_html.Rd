@@ -4,14 +4,19 @@
 \alias{create_chunks_html}
 \title{Create Code Chunks for HTML output (internal)}
 \usage{
-create_chunks_html(length)
+create_chunks_html(length, classes = NULL)
 }
 \arguments{
 \item{length}{(\code{integer})\cr
 integer specifying the number of code chunks to create.}
+
+\item{classes}{(\code{list})\cr
+list of character vectors, one per element, containing the classes of each
+object. Used to generate appropriate rendering code.}
 }
 \description{
-Creates R markdown chunks that render each \code{gt_tbl} object as HTML using
-\code{gt::as_raw_html()}.
+Creates R markdown chunks that render each object as HTML.
+Uses class-appropriate rendering: \code{print()} for gtsummary, gt, flextable tables, \code{grid::grid.draw()} for grobs, and
+\code{print()} for ggplots. For other objects, the default is to print the object.
 }
 \keyword{internal}

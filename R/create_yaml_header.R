@@ -8,7 +8,7 @@
 #'   path to saved RDS object file.
 #' @param pkg_to_attach (`character`)\cr
 #'   character vector of packages that are attached at the top of the R markdown
-#'   document. These are needed to access the appropraite print methods
+#'   document. These are needed to access the appropriate print methods
 #'   for the loaded table object.
 #' @param reference_docx (`path`)\cr
 #'   path the reference Word document.
