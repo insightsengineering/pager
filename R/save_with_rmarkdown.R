@@ -43,11 +43,12 @@ save_docx_with_rmarkdown <- function(x,
   pkg_to_attach <-
     dplyr::recode_values(
       pkg_to_attach,
-      "gtsummary" ~ "gtsummary",
-      "gt_tbl"    ~ "gt",
-      "gg"        ~ "ggplot2",
-      "ggplot"    ~ "ggplot2",
-      "grob"      ~ "grid"
+      "gtsummary"  ~ "gtsummary",
+      "gt_tbl"     ~ "gt",
+      "flextable"  ~ "flextable",
+      "gg"         ~ "ggplot2",
+      "ggplot"     ~ "ggplot2",
+      "grob"       ~ "grid"
     ) |>
     unique()
 

@@ -36,18 +36,40 @@ create_yaml_header_html <- function(object_path, pkg_to_attach, css = NULL) {
 
 #' Create Code Chunks for HTML output (internal)
 #'
-#' Creates R markdown chunks that render each `gt_tbl` object as HTML using
-#' `gt::as_raw_html()`.
+#' Creates R markdown chunks that render each object as HTML.
+#' Uses class-appropriate rendering: `gt::as_raw_html()` for gt tables,
+#' `gtsummary::as_gt()` conversion for gtsummary tables,
+#' `print()` for plots, and default knitr print methods for other objects.
 #'
 #' @inheritParams create_chunks
+#' @param classes (`list`)\cr
+#'   list of character vectors, one per element, containing the classes of each
+#'   object. Used to generate appropriate rendering code.
 #' @keywords internal
-create_chunks_html <- function(length) {
+create_chunks_html <- function(length, classes = NULL) {
   map(
     seq_len(length),
     \(i) {
+      cls <- if (!is.null(classes)) classes[[i]] else character()
+
+      render_code <-
+        if ("gt_tbl" %in% cls) {
+          glue::glue("gt::as_raw_html(x[[{i}]]) |> cat()")
+        } else if ("gtsummary" %in% cls) {
+          glue::glue("x[[{i}]] |> gtsummary::as_gt() |> gt::as_raw_html() |> cat()")
+        } else if ("flextable" %in% cls) {
+          glue::glue("x[[{i}]]")
+        } else if (any(c("gg", "ggplot") %in% cls)) {
+          glue::glue("print(x[[{i}]])")
+        } else if ("grob" %in% cls) {
+          glue::glue("grid::grid.draw(x[[{i}]])")
+        } else {
+          glue::glue("x[[{i}]]")
+        }
+
       str_chunk <- c(
         "```{r}",
-        glue::glue("gt::as_raw_html(x[[{i}]]) |> cat()"),
+        render_code,
         "```"
       )
 
@@ -106,17 +128,28 @@ save_html_with_rmarkdown <- function(x,
   pkg_to_attach <-
     dplyr::recode_values(
       pkg_to_attach,
-      "gtsummary" ~ "gtsummary",
-      "gt_tbl"    ~ "gt",
-      "gg"        ~ "ggplot2",
-      "ggplot"    ~ "ggplot2",
-      "grob"      ~ "grid"
+      "gtsummary"  ~ "gtsummary",
+      "gt_tbl"     ~ "gt",
+      "flextable"  ~ "flextable",
+      "gg"         ~ "ggplot2",
+      "ggplot"     ~ "ggplot2",
+      "grob"       ~ "grid"
     ) |>
     unique()
 
+  # get classes for each element (used to generate class-appropriate chunks)
+  element_classes <- if (is_simple_list(x)) {
+    map(x, class)
+  } else {
+    list(class(x))
+  }
+
   # string of the yaml header and chunks
   chr_rmarkdown_yaml <- create_yaml_header_html(temp_file_x, pkg_to_attach, css)
-  chr_rmarkdown_chunk <- create_chunks_html(ifelse(is_simple_list(x), length(x), 1L))
+  chr_rmarkdown_chunk <- create_chunks_html(
+    ifelse(is_simple_list(x), length(x), 1L),
+    classes = element_classes
+  )
 
   chr_rmarkdown <- c(chr_rmarkdown_yaml, "", chr_rmarkdown_chunk)
 

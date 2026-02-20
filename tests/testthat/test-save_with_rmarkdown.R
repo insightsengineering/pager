@@ -9,6 +9,7 @@ tbl <-
 
 
 test_that("save_docx() works with flextable", {
+  skip_if_not_installed("flextable")
   # test with a single table
   file_path <- tempfile(fileext = ".docx")
   expect_error(

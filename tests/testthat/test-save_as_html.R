@@ -22,7 +22,7 @@ test_that("save_html() works with gt table", {
   expect_match(regexp = "html_document", res[3], fixed = TRUE)
   expect_match(regexp = "self_contained: true", res[4], fixed = TRUE)
   expect_match(regexp = "library(gt)", res[9], fixed = TRUE)
-  expect_match(regexp = "gt::as_raw_html(x[[1]]) |> cat()", res[15], fixed = TRUE)
+  expect_match(regexp = "gt::as_raw_html(x[[1]]) |> cat()", res[16], fixed = TRUE)
 })
 
 test_that("save_html() works with a list of gt tables", {
@@ -35,8 +35,8 @@ test_that("save_html() works with a list of gt tables", {
   )
   expect_true(file.exists(file_path))
 
-  expect_match(regexp = "gt::as_raw_html(x[[1]]) |> cat()", res[15], fixed = TRUE)
-  expect_match(regexp = "gt::as_raw_html(x[[2]]) |> cat()", res[21], fixed = TRUE)
+  expect_match(regexp = "gt::as_raw_html(x[[1]]) |> cat()", res[16], fixed = TRUE)
+  expect_match(regexp = "gt::as_raw_html(x[[2]]) |> cat()", res[22], fixed = TRUE)
 })
 
 test_that("save_html() works with gtsummary table", {
@@ -50,6 +50,7 @@ test_that("save_html() works with gtsummary table", {
 })
 
 test_that("save_html() works with flextable", {
+  skip_if_not_installed("flextable")
   # test with a single flextable
   file_path <- tempfile(fileext = ".html")
   expect_error(
