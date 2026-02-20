@@ -37,9 +37,8 @@ create_yaml_header_html <- function(object_path, pkg_to_attach, css = NULL) {
 #' Create Code Chunks for HTML output (internal)
 #'
 #' Creates R markdown chunks that render each object as HTML.
-#' Uses class-appropriate rendering: `gt::as_raw_html()` for gt tables,
-#' `gtsummary::as_gt()` conversion for gtsummary tables,
-#' `print()` for plots, and default knitr print methods for other objects.
+#' Uses class-appropriate rendering: `print()` for gtsummary, gt, flextable tables, `grid::grid.draw()` for grobs, and
+#' `print()` for ggplots. For other objects, the default is to print the object.
 #'
 #' @inheritParams create_chunks
 #' @param classes (`list`)\cr
@@ -54,9 +53,9 @@ create_chunks_html <- function(length, classes = NULL) {
 
       render_code <-
         if ("gt_tbl" %in% cls) {
-          glue::glue("gt::as_raw_html(x[[{i}]]) |> cat()")
+          glue::glue("x[[{i}]]")
         } else if ("gtsummary" %in% cls) {
-          glue::glue("x[[{i}]] |> gtsummary::as_gt() |> gt::as_raw_html() |> cat()")
+          glue::glue("x[[{i}]]")
         } else if ("flextable" %in% cls) {
           glue::glue("x[[{i}]]")
         } else if (any(c("gg", "ggplot") %in% cls)) {

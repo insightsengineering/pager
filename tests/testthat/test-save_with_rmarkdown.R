@@ -42,7 +42,7 @@ test_that("save_docx() works with gtsummary table", {
 
   expect_match(regexp = "*.reference_docx.*", res[4])
   expect_match(regexp = "library(gtsummary)", res[9], fixed = TRUE)
-  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
+  expect_match(regexp = "print_obj(x[[1]])", res[19], fixed = TRUE)
 
   # test with a list of tables
   file_path <- tempfile(fileext = ".docx")
@@ -57,8 +57,8 @@ test_that("save_docx() works with gtsummary table", {
   # Read the contents of the temporary Rmd file
   expect_match(regexp = "*.reference_docx.*", res[4])
   expect_match(regexp = "library(gtsummary)", res[9], fixed = TRUE)
-  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
-  expect_match(regexp = "x[[2]]", res[22], fixed = TRUE)
+  expect_match(regexp = "print_obj(x[[1]])", res[19], fixed = TRUE)
+  expect_match(regexp = "print_obj(x[[2]])", res[25], fixed = TRUE)
 })
 
 test_that("save_docx() fails with incorrect inputs", {
