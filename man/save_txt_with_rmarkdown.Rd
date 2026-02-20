@@ -7,9 +7,8 @@
 save_txt_with_rmarkdown(x, path, encoding = "UTF-8")
 }
 \arguments{
-\item{x}{(\code{gtsummary}/\code{gt_tbl}/\code{flextable}/\code{list})\cr
-object of class \code{'gtsummary'}, \code{'gt_tbl'} (gt table), \code{'flextable'},
-or a list of these objects.}
+\item{x}{(\code{gt_tbl}/\code{list})\cr
+object of class \code{'gt_tbl'} (gt table), or a list of \code{'gt_tbl'} objects.}
 
 \item{path}{(\code{path})\cr
 path to save file to, e.g. \code{"rendered_table.txt"} or \code{"rendered_table.md"}.}

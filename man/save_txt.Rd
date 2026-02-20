@@ -7,9 +7,8 @@
 save_txt(x, path, encoding = "UTF-8")
 }
 \arguments{
-\item{x}{(\code{gtsummary}/\code{gt_tbl}/\code{flextable}/\code{list})\cr
-object of class \code{'gtsummary'}, \code{'gt_tbl'} (gt table), \code{'flextable'},
-or a list of these objects.}
+\item{x}{(\code{gt_tbl}/\code{list})\cr
+object of class \code{'gt_tbl'} (gt table), or a list of \code{'gt_tbl'} objects.}
 
 \item{path}{(\code{path})\cr
 path to save file to, e.g. \code{"rendered_table.txt"} or \code{"rendered_table.md"}.}
@@ -22,35 +21,19 @@ character encoding to use when writing the output file. Default is \code{"UTF-8"
 \code{.rmd} file that is rendered.
 }
 \description{
-Save table input as a plain text (Markdown-formatted) file via R markdown.
-Plots are not supported for plain text output.
+Save a \code{gt_tbl} object as a plain text (Markdown-formatted) file via R markdown.
+Only \code{gt_tbl} objects (from the gt package) are supported for plain text output.
 }
 \examples{
-# create table
-tbl <-
-  cards::ADAE[1:150, ] |>
-  gtsummary::tbl_hierarchical(
-    variables = c(AESOC, AETERM),
-    by = TRTA,
-    denominator = cards::ADSL,
-    id = USUBJID,
-  )
+# create gt table
+tbl <- gt::gt(head(mtcars))
 
-# save as txt with gtsummary
+# save as txt
 tbl |>
   save_txt(path = tempfile(fileext = ".txt"))
 
-# save as txt with flextable
-gtsummary::as_flex_table(tbl) |>
-  save_txt(path = tempfile(fileext = ".txt"))
-
-# save as txt with gt
-tbl |>
-  gtsummary::as_gt() |>
-  save_txt(path = tempfile(fileext = ".txt"))
-
-# save a paginated table as txt
-gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+# save a list of gt tables as txt
+list(gt::gt(head(mtcars)), gt::gt(tail(mtcars))) |>
   save_txt(path = tempfile(fileext = ".txt"))
 
 }
