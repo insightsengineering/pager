@@ -36,6 +36,9 @@ create_yaml_header <- function(object_path, pkg_to_attach, reference_docx) {
     paste0("library(", pkg_to_attach, ")"),
     paste("x <-", rlang::call2("readRDS", file = as.character(object_path)) |> rlang::expr_deparse(width = Inf)),
     "if (!is_simple_list(x)) x <- list(x)",
+    "print_obj <- function(obj) {",
+    "  if (inherits(obj, 'grob')) grid::grid.draw(obj) else obj",
+    "}",
     "```",
     ""
   )

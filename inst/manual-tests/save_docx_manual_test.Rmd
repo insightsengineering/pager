@@ -1,0 +1,175 @@
+---
+title: "Manual tests — save_docx()"
+output: rmarkdown::github_document
+---
+
+This file contains self-contained code snippets for **manual inspection** of
+`save_docx()` output. Run each chunk individually, open the resulting `.docx`
+file and verify the output looks as expected.
+
+```{r setup, include=FALSE}
+library(pager)
+library(gtsummary)
+library(ggplot2)
+
+# shared sample table used across all gtsummary / gt / flextable snippets
+tbl <-
+  cards::ADAE[1:150, ] |>
+  gtsummary::tbl_hierarchical(
+    variables = c(AESOC, AETERM),
+    by = TRTA,
+    denominator = cards::ADSL,
+    id = USUBJID,
+  )
+```
+
+---
+
+## 1. `gtsummary` table
+
+```{r gtsummary-single}
+out <- file.path(tempdir(), "docx_gtsummary.docx")
+tbl |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 2. `gt_tbl` table (via `gtsummary::as_gt()`)
+
+```{r gt-single}
+out <- file.path(tempdir(), "docx_gt.docx")
+tbl |>
+  gtsummary::as_gt() |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 3. `gt_tbl` with manual column widths
+
+```{r gt-col-width}
+out <- file.path(tempdir(), "docx_gt_colwidth.docx")
+tbl |>
+  gtsummary::as_gt() |>
+  gt::cols_width(dplyr::everything() ~ gt::px(20)) |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 4. `flextable` table (autofit layout)
+
+```{r flextable-autofit}
+out <- file.path(tempdir(), "docx_flextable_autofit.docx")
+tbl |>
+  gtsummary::as_flex_table() |>
+  flextable::set_table_properties(layout = "autofit") |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 5. `flextable` with manual column widths
+
+```{r flextable-col-width}
+out <- file.path(tempdir(), "docx_flextable_colwidth.docx")
+tbl |>
+  gtsummary::as_flex_table() |>
+  flextable::width(j = 1, width = 2) |>
+  flextable::width(j = 2:3, width = 1.5) |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 6. Paginated table (list of `gtsummary` objects)
+
+```{r gtsummary-paginated}
+out <- file.path(tempdir(), "docx_gtsummary_paginated.docx")
+gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 7. Paginated table (list of `gt_tbl` objects)
+
+```{r gt-paginated}
+out <- file.path(tempdir(), "docx_gt_paginated.docx")
+gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+  purrr::map(gtsummary::as_gt) |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 8. Paginated table (list of `flextable` objects)
+
+```{r flextable-paginated}
+out <- file.path(tempdir(), "docx_flextable_paginated.docx")
+gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+  purrr::map(gtsummary::as_flex_table) |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 9. `ggplot` figure
+
+```{r ggplot}
+out <- file.path(tempdir(), "docx_ggplot.docx")
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(title = "Motor Trend Cars", x = "Weight (1000 lbs)", y = "Miles per gallon")
+save_docx(p, path = out)
+message("Output: ", out)
+```
+
+---
+
+## 10. `grob` (grid graphic)
+
+```{r grob}
+out <- file.path(tempdir(), "docx_grob.docx")
+  
+x <- (grid::circleGrob() |>
+  save_docx(path = out))
+message("Output: ", out)
+```
+
+---
+
+## 11. Mixed list (`ggplot` + `grob`)
+
+```{r mixed-list}
+out <- file.path(tempdir(), "docx_mixed_list.docx")
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+g <- grid::circleGrob()
+list(p, g) |>
+  save_docx(path = out)
+message("Output: ", out)
+```
+
+---
+
+## 12. Landscape orientation (custom `reference_docx`)
+
+```{r landscape}
+out <- file.path(tempdir(), "docx_landscape.docx")
+tbl |>
+  gtsummary::as_gt() |>
+  save_docx(
+    path = out,
+    reference_docx = pager::get_reference_docx("landscape")
+  )
+message("Output: ", out)
+```
