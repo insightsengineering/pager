@@ -22,7 +22,7 @@ test_that("save_html() works with gt table", {
   expect_match(regexp = "html_document", res[3], fixed = TRUE)
   expect_match(regexp = "self_contained: true", res[4], fixed = TRUE)
   expect_match(regexp = "library(gt)", res[9], fixed = TRUE)
-  expect_match(regexp = "gt::as_raw_html(x[[1]]) |> cat()", res[16], fixed = TRUE)
+  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
 })
 
 test_that("save_html() works with a list of gt tables", {
@@ -35,8 +35,8 @@ test_that("save_html() works with a list of gt tables", {
   )
   expect_true(file.exists(file_path))
 
-  expect_match(regexp = "gt::as_raw_html(x[[1]]) |> cat()", res[16], fixed = TRUE)
-  expect_match(regexp = "gt::as_raw_html(x[[2]]) |> cat()", res[22], fixed = TRUE)
+  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
+  expect_match(regexp = "x[[2]]", res[22], fixed = TRUE)
 })
 
 test_that("save_html() works with gtsummary table", {
@@ -118,33 +118,33 @@ test_that("save_html() works with custom CSS", {
 })
 
 test_that("save_html() fails with incorrect inputs", {
-  expect_snapshot(
+  expect_error(
     save_html(),
-    error = TRUE
+    "The `x` argument cannot be missing."
   )
 
-  expect_snapshot(
+  expect_error(
     save_html(x = tbl),
-    error = TRUE
+    "The `path` argument cannot be missing."
   )
 
-  expect_snapshot(
+  expect_error(
     save_html(x = tbl, path = 123),
-    error = TRUE
+    "The `path` argument must be a string, not a number."
   )
 
-  expect_snapshot(
+  expect_error(
     save_html(x = "not_a_table", path = tempfile(fileext = ".html")),
-    error = TRUE
+    "<gg/ggplot/grob/gtsummary/gt_tbl/flextable/list>"
   )
 
-  expect_snapshot(
+  expect_error(
     save_html(list("a", "b"), "a"),
-    error = TRUE
+    "each list element must be one of the following classes"
   )
 
-  expect_snapshot(
+  expect_error(
     save_html(x = gt_tbl, path = tempfile(fileext = ".html"), css = 123),
-    error = TRUE
+    "The `css` argument must be a string, not a number."
   )
 })
