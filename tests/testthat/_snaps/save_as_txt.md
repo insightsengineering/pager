@@ -28,7 +28,7 @@
       save_txt(x = "not_a_table", path = tempfile(fileext = ".txt"))
     Condition
       Error in `save_txt()`:
-      ! The `x` argument must be class <gt_tbl/list>, not a string.
+      ! The `x` argument must be class <gt_tbl/gtsummary/list>, not a string.
 
 ---
 
@@ -36,13 +36,13 @@
       save_txt(list("a", "b"), path = tempfile(fileext = ".txt"))
     Condition
       Error in `save_txt()`:
-      ! When argument `x` is a list, each list element must be of class <gt_tbl>.
+      ! When argument `x` is a list, each list element must be of class <gt_tbl> or <gtsummary>.
 
-# save_txt() fails with non-gt_tbl objects
+# save_txt() fails with non-gt_tbl/gtsummary objects
 
     Code
       save_txt(ft, path = tempfile(fileext = ".txt"))
     Condition
       Error in `save_txt()`:
-      ! The `x` argument must be class <gt_tbl/list>, not a <flextable> object.
+      ! The `x` argument must be class <gt_tbl/gtsummary/list>, not a <flextable> object.
 

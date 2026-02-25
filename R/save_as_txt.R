@@ -14,9 +14,13 @@ create_yaml_header_txt <- function(object_path, pkg_to_attach) {
     "knitr::opts_chunk$set(echo = FALSE, message = FALSE)",
     paste0("library(", pkg_to_attach, ")"),
     paste("x <-", rlang::call2("readRDS", file = as.character(object_path)) |> rlang::expr_deparse(width = Inf)),
-    "if (!inherits(x, 'list') || inherits(x, 'gt_tbl')) x <- list(x)",
+    "if (!inherits(x, 'list') || inherits(x, 'gt_tbl') || inherits(x, 'gtsummary')) x <- list(x)",
     "as_kable_txt <- function(obj) {",
-    "  knitr::kable(gt:::dt_data_get(obj))",
+    "  if (inherits(obj, 'gtsummary')) {",
+    "    gtsummary::as_kable(obj)",
+    "  } else {",
+    "    knitr::kable(gt:::dt_data_get(obj))",
+    "  }",
     "}",
     "```",
     ""
@@ -69,11 +73,11 @@ save_txt_with_rmarkdown <- function(x,
   # convert path to absolute path to ensure output is created in the correct location
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
-  # txt output only supports gt_tbl objects
-  check_class(x, cls = c("gt_tbl", "list"))
-  if (is_simple_list(x) && some(x, ~ !inherits(.x, "gt_tbl"))) {
+  # txt output supports gt_tbl and gtsummary objects
+  check_class(x, cls = c("gt_tbl", "gtsummary", "list"))
+  if (is_simple_list(x) && some(x, ~ !inherits(.x, c("gt_tbl", "gtsummary")))) {
     cli::cli_abort(
-      "When argument {.arg x} is a list, each list element must be of class {.cls gt_tbl}.",
+      "When argument {.arg x} is a list, each list element must be of class {.cls gt_tbl} or {.cls gtsummary}.",
       call = get_cli_abort_call()
     )
   }
@@ -84,8 +88,10 @@ save_txt_with_rmarkdown <- function(x,
   # save the input object to a tempfile (which will be loaded in the rmd file) -
   saveRDS(x, file = temp_file_x)
 
-  # gt package is always attached for gt_tbl objects
-  pkg_to_attach <- "gt"
+  # determine which packages need to be attached based on object class(es)
+  x_list <- if (is_simple_list(x)) x else list(x)
+  has_gtsummary <- some(x_list, ~ inherits(.x, "gtsummary"))
+  pkg_to_attach <- if (has_gtsummary) c("gt", "gtsummary") else "gt"
 
   # string of the yaml header and chunks
   chr_rmarkdown_yaml <- create_yaml_header_txt(temp_file_x, pkg_to_attach)
@@ -120,11 +126,14 @@ save_txt_with_rmarkdown <- function(x,
 
 #' Save as txt (plain text / Markdown)
 #'
-#' Save a `gt_tbl` object as a plain text (Markdown-formatted) file via R markdown.
-#' Only `gt_tbl` objects (from the gt package) are supported for plain text output.
+#' Save a `gt_tbl` or `gtsummary` object as a plain text (Markdown-formatted)
+#' file via R markdown. Both `gt_tbl` objects (from the gt package) and
+#' `gtsummary` objects are supported for plain text output.
 #'
-#' @param x (`gt_tbl`/`list`)\cr
-#'   object of class `'gt_tbl'` (gt table), or a list of `'gt_tbl'` objects.
+#' @param x (`gt_tbl`/`gtsummary`/`list`)\cr
+#'   object of class `'gt_tbl'` (gt table) or `'gtsummary'`, or a list of
+#'   such objects. Lists may contain a mix of `'gt_tbl'` and `'gtsummary'`
+#'   objects.
 #' @param path (`path`)\cr
 #'   path to save file to, e.g. `"rendered_table.txt"` or `"rendered_table.md"`.
 #' @param encoding (`string`)\cr
