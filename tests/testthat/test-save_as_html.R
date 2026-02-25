@@ -19,10 +19,10 @@ test_that("save_html() works with gt table", {
   )
   expect_true(file.exists(file_path))
 
-  expect_match(regexp = "html_document", res[3], fixed = TRUE)
-  expect_match(regexp = "self_contained: true", res[4], fixed = TRUE)
-  expect_match(regexp = "library(gt)", res[9], fixed = TRUE)
-  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
+  expect_match(regexp = "html_document", res[4], fixed = TRUE)
+  expect_match(regexp = "self_contained: true", res[5], fixed = TRUE)
+  expect_match(regexp = "library(gt)", res[10], fixed = TRUE)
+  expect_match(regexp = "x[[1]]", res[17], fixed = TRUE)
 })
 
 test_that("save_html() works with a list of gt tables", {
@@ -35,8 +35,8 @@ test_that("save_html() works with a list of gt tables", {
   )
   expect_true(file.exists(file_path))
 
-  expect_match(regexp = "x[[1]]", res[16], fixed = TRUE)
-  expect_match(regexp = "x[[2]]", res[22], fixed = TRUE)
+  expect_match(regexp = "x[[1]]", res[17], fixed = TRUE)
+  expect_match(regexp = "x[[2]]", res[23], fixed = TRUE)
 })
 
 test_that("save_html() works with gtsummary table", {

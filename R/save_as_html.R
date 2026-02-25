@@ -18,6 +18,7 @@ create_yaml_header_html <- function(object_path, pkg_to_attach, css = NULL) {
 
   c(
     "---",
+    "title: \" \"",
     "output:",
     "  html_document:",
     "    self_contained: true",
