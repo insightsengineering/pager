@@ -4,10 +4,19 @@
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/accepted_classes.html</loc></url>
 <url><loc>/reference/create_chunks.html</loc></url>
+<url><loc>/reference/create_chunks_html.html</loc></url>
+<url><loc>/reference/create_chunks_txt.html</loc></url>
 <url><loc>/reference/create_yaml_header.html</loc></url>
+<url><loc>/reference/create_yaml_header_html.html</loc></url>
+<url><loc>/reference/create_yaml_header_txt.html</loc></url>
 <url><loc>/reference/get_reference_docx.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/pager-package.html</loc></url>
-<url><loc>/reference/save_with_rmarkdown.html</loc></url>
+<url><loc>/reference/save_docx.html</loc></url>
+<url><loc>/reference/save_docx_with_rmarkdown.html</loc></url>
+<url><loc>/reference/save_html.html</loc></url>
+<url><loc>/reference/save_html_with_rmarkdown.html</loc></url>
+<url><loc>/reference/save_txt.html</loc></url>
+<url><loc>/reference/save_txt_with_rmarkdown.html</loc></url>
 </urlset>
 
