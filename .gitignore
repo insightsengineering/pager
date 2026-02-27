@@ -2,3 +2,10 @@
 
 # don't commit temp MS Office files
 ~$*
+
+/.quarto/
+.Rhistory
+.RData
+.Ruserdata
+# don't commit .DS_Store files created by macOS
+.DS_Store

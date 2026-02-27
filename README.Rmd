@@ -4,15 +4,6 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
-
 # pager
 
 <!-- badges: start -->
@@ -22,11 +13,12 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/insightsengineering/pager/graph/badge.svg)](https://app.codecov.io/gh/insightsengineering/pager)
 <!-- badges: end -->
 
-The pager package makes it simple to save tables of class gtsummary, gt, and flextable as a Word document using a reference document.
-This is accomplished by creating the document via R markdown using the `reference_docx:` field.
+The pager package makes it simple to save tables and plots as Word, HTML, or plain text documents.
+Tables of class `gtsummary`, `gt`, and `flextable`, as well as `ggplot` and `grob` plots, are supported.
+This is accomplished by rendering the objects via R Markdown.
 
-The package also supports lists of table objects.
-When a list is passed, a page break is placed between each table in the list.
+The package also supports lists of objects.
+When a list is passed, each element is placed on a separate page (Word), separated by a horizontal rule (HTML), or separated by a horizontal rule (plain text).
 
 ## Installation
 
@@ -41,7 +33,7 @@ pak::pak("insightsengineering/pager")
 
 To begin, let's create a summary table.
 
-```{r example}
+``` r
 library(pager)
 
 # create table
@@ -55,17 +47,59 @@ tbl <-
   )
 ```
 
-The code below will save the table as  Word document using the default portrait orientation reference document.
+### Word (.docx)
 
-```{r table}
+The code below will save the table as a Word document using the default portrait orientation reference document.
+
+``` r
 gtsummary::as_flex_table(tbl) |>
-  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+  save_docx(path = tempfile(fileext = ".docx"))
 ```
 
 The example below first splits the summary table into a list of tables.
 Each table is saved to a separate page in the resulting Word document.
 
-```{r table-list}
+``` r
 gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
-  save_with_rmarkdown(path = tempfile(fileext = ".docx"))
+  save_docx(path = tempfile(fileext = ".docx"))
+```
+
+### HTML (.html)
+
+The code below will save the table as a self-contained HTML file.
+
+``` r
+tbl |>
+  gtsummary::as_gt() |>
+  save_html(path = tempfile(fileext = ".html"))
+```
+
+A paginated table can also be saved as HTML — each page is separated by a horizontal rule.
+
+``` r
+gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
+  save_html(path = tempfile(fileext = ".html"))
+```
+
+### Plain text (.txt)
+
+The code below will save the table as a plain text (Markdown-formatted) file.
+
+``` r
+tbl |>
+  save_txt(path = tempfile(fileext = ".txt"))
+```
+
+`save_txt()` also accepts `gt` tables directly.
+
+``` r
+gt::gt(head(mtcars)) |>
+  save_txt(path = tempfile(fileext = ".txt"))
+```
+
+A list of tables can also be saved as plain text — each table is separated by a horizontal rule.
+
+``` r
+list(gt::gt(head(mtcars)), gt::gt(tail(mtcars))) |>
+  save_txt(path = tempfile(fileext = ".txt"))
 ```

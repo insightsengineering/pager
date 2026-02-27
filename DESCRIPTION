@@ -12,7 +12,7 @@ License: Apache License 2.0
 Depends: R (>= 4.1.0)
 Imports: 
     cli,
-    dplyr,
+    dplyr (>= 1.2.0),
     fs,
     glue,
     rlang,

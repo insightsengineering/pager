@@ -15,7 +15,7 @@ create_chunks <- function(length) {
   map(
     seq_len(length),
     \(i) {
-      str_chunk <- c("```{r}", glue::glue("x[[{i}]]"), "```")
+      str_chunk <- c("```{r}", glue::glue("print_obj(x[[{i}]])"), "```")
 
       # add page break between tables (but not to the last table)
       if (i < length) {
