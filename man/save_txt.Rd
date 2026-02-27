@@ -7,8 +7,10 @@
 save_txt(x, path, encoding = "UTF-8")
 }
 \arguments{
-\item{x}{(\code{gt_tbl}/\code{list})\cr
-object of class \code{'gt_tbl'} (gt table), or a list of \code{'gt_tbl'} objects.}
+\item{x}{(\code{gt_tbl}/\code{gtsummary}/\code{list})\cr
+object of class \code{'gt_tbl'} (gt table) or \code{'gtsummary'}, or a list of
+such objects. Lists may contain a mix of \code{'gt_tbl'} and \code{'gtsummary'}
+objects.}
 
 \item{path}{(\code{path})\cr
 path to save file to, e.g. \code{"rendered_table.txt"} or \code{"rendered_table.md"}.}
@@ -21,18 +23,20 @@ character encoding to use when writing the output file. Default is \code{"UTF-8"
 \code{.rmd} file that is rendered.
 }
 \description{
-Save a \code{gt_tbl} object as a plain text (Markdown-formatted) file via R markdown.
-Only \code{gt_tbl} objects (from the gt package) are supported for plain text output.
+Save a \code{gt_tbl} or \code{gtsummary} object as a plain text (Markdown-formatted)
+file via R markdown. Both \code{gt_tbl} objects (from the gt package) and
+\code{gtsummary} objects are supported for plain text output.
 }
 \examples{
-# create gt table
-tbl <- gt::gt(head(mtcars))
-
-# save as txt
-tbl |>
+# save a gt table as txt
+gt::gt(head(mtcars)) |>
   save_txt(path = tempfile(fileext = ".txt"))
 
-# save a list of gt tables as txt
+# save a gtsummary table as txt
+gtsummary::tbl_summary(gtsummary::trial[, c("age", "trt")]) |>
+  save_txt(path = tempfile(fileext = ".txt"))
+
+# save a list of gt tables as txt — tables are separated by a horizontal rule
 list(gt::gt(head(mtcars)), gt::gt(tail(mtcars))) |>
   save_txt(path = tempfile(fileext = ".txt"))
 

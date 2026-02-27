@@ -143,14 +143,15 @@ save_txt_with_rmarkdown <- function(x,
 #'   `.rmd` file that is rendered.
 #'
 #' @examples
-#' # create gt table
-#' tbl <- gt::gt(head(mtcars))
-#'
-#' # save as txt
-#' tbl |>
+#' # save a gt table as txt
+#' gt::gt(head(mtcars)) |>
 #'   save_txt(path = tempfile(fileext = ".txt"))
 #'
-#' # save a list of gt tables as txt
+#' # save a gtsummary table as txt
+#' gtsummary::tbl_summary(gtsummary::trial[, c("age", "trt")]) |>
+#'   save_txt(path = tempfile(fileext = ".txt"))
+#'
+#' # save a list of gt tables as txt — tables are separated by a horizontal rule
 #' list(gt::gt(head(mtcars)), gt::gt(tail(mtcars))) |>
 #'   save_txt(path = tempfile(fileext = ".txt"))
 #'

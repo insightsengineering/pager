@@ -199,6 +199,10 @@ save_html_with_rmarkdown <- function(x,
 #'     id = USUBJID,
 #'   )
 #'
+#' # save a gtsummary table as html
+#' tbl |>
+#'   save_html(path = tempfile(fileext = ".html"))
+#'
 #' # save as html with gt
 #' tbl |>
 #'   gtsummary::as_gt() |>
@@ -212,7 +216,7 @@ save_html_with_rmarkdown <- function(x,
 #'     css = "body { font-family: Arial; font-size: 12px; }"
 #'   )
 #'
-#' # save a paginated table as html
+#' # save a paginated table as html — pages are separated by a horizontal rule
 #' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
 #'   save_html(path = tempfile(fileext = ".html"))
 #'
