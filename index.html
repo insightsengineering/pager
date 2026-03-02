@@ -60,8 +60,8 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The pager package makes it simple to save tables of class gtsummary, gt, and flextable as a Word document using a reference document. This is accomplished by creating the document via R markdown using the <code>reference_docx:</code> field.</p>
-<p>The package also supports lists of table objects. When a list is passed, a page break is placed between each table in the list.</p>
+<p>The pager package makes it simple to save tables and plots as Word, HTML, or plain text documents. Tables of class <code>gtsummary</code>, <code>gt</code>, and <code>flextable</code>, as well as <code>ggplot</code> and <code>grob</code> plots, are supported. This is accomplished by rendering the objects via R Markdown.</p>
+<p>The package also supports lists of objects. When a list is passed, each element is placed on a separate page (Word), separated by a horizontal rule (HTML), or separated by a horizontal rule (plain text).</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -79,23 +79,54 @@
 <span></span>
 <span><span class="co"># create table</span></span>
 <span><span class="va">tbl</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">cards</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/adam.html" class="external-link">ADAE</a></span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>,<span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">cards</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/adam.html" class="external-link">ADAE</a></span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span>, <span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_hierarchical.html" class="external-link">tbl_hierarchical</a></span><span class="op">(</span></span>
 <span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AESOC</span>, <span class="va">AETERM</span><span class="op">)</span>,</span>
 <span>    by <span class="op">=</span> <span class="va">TRTA</span>,</span>
 <span>    denominator <span class="op">=</span> <span class="fu">cards</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/adam.html" class="external-link">ADSL</a></span>,</span>
 <span>    id <span class="op">=</span> <span class="va">USUBJID</span>,</span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>The code below will save the table as Word document using the default portrait orientation reference document.</p>
+<div class="section level3">
+<h3 id="word-docx">Word (.docx)<a class="anchor" aria-label="anchor" href="#word-docx"></a>
+</h3>
+<p>The code below will save the table as a Word document using the default portrait orientation reference document.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/as_flex_table.html" class="external-link">as_flex_table</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">save_with_rmarkdown</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ Writing '/var/folders/6f/gdjf_vxj2wl3jhmxdkd1hd_w0000gn/T//RtmpcdsRdZ/filee351225cee86.docx'</span></span></code></pre></div>
+<span>  <span class="fu"><a href="reference/save_docx.html">save_docx</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The example below first splits the summary table into a list of tables. Each table is saved to a separate page in the resulting Word document.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_split_by.html" class="external-link">tbl_split_by_rows</a></span><span class="op">(</span><span class="va">tbl</span>, row_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">save_with_rmarkdown</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ Writing '/var/folders/6f/gdjf_vxj2wl3jhmxdkd1hd_w0000gn/T//RtmpcdsRdZ/filee35112a6c071.docx'</span></span></code></pre></div>
+<span>  <span class="fu"><a href="reference/save_docx.html">save_docx</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="html-html">HTML (.html)<a class="anchor" aria-label="anchor" href="#html-html"></a>
+</h3>
+<p>The code below will save the table as a self-contained HTML file.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/as_gt.html" class="external-link">as_gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/save_html.html">save_html</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".html"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>A paginated table can also be saved as HTML — each page is separated by a horizontal rule.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_split_by.html" class="external-link">tbl_split_by_rows</a></span><span class="op">(</span><span class="va">tbl</span>, row_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/save_html.html">save_html</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".html"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="plain-text-txt">Plain text (.txt)<a class="anchor" aria-label="anchor" href="#plain-text-txt"></a>
+</h3>
+<p>The code below will save the table as a plain text (Markdown-formatted) file.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/save_txt.html">save_txt</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="reference/save_txt.html">save_txt()</a></code> also accepts <code>gt</code> tables directly.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/save_txt.html">save_txt</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>A list of tables can also be saved as plain text — each table is separated by a horizontal rule.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>, <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/save_txt.html">save_txt</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 </div>
   </div>

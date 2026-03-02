@@ -88,13 +88,13 @@ path the reference Word document.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   word_document:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     reference_docx: /tmp/RtmphIOv4J/file1a79491dc872.docx</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     reference_docx: /tmp/RtmpVH4Fyk/file1a965384b885.docx</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ```{r setup, include=FALSE}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> knitr::opts_chunk$set(echo = FALSE, message = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> library(flextable)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;- readRDS(file = "/tmp/RtmphIOv4J/file1a797976cf92.rds")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;- readRDS(file = "/tmp/RtmpVH4Fyk/file1a96211ac26e.rds")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> if (!is_simple_list(x)) x &lt;- list(x)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> print_obj &lt;- function(obj) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   if (inherits(obj, 'grob')) grid::grid.draw(obj) else obj</span>
