@@ -123,7 +123,7 @@ save_html_with_rmarkdown <- function(x,
   pkg_to_attach <-
     ifelse(is_simple_list(x), map(x, class), list(class(x))) |>
     unlist() |>
-    intersect(x = _, accepted_obj)
+    intersect(accepted_obj)
 
   pkg_to_attach <-
     dplyr::recode_values(
