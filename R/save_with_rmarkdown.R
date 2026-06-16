@@ -74,6 +74,10 @@ save_docx_with_rmarkdown <- function(x,
     }
   )
 
+  # pandoc references flextable images by their temporary on-disk path instead
+  # of packaging them, which makes the document unopenable. Repair it in place.
+  embed_ondisk_images(path)
+
   invisible(chr_rmarkdown)
 }
 
