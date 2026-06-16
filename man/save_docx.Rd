@@ -36,6 +36,8 @@ tbl <-
     id = USUBJID,
   )
 
+# rendering to docx is slow, so these calls are not run during routine checks
+\donttest{
 # save as docx with flextable
 gtsummary::as_flex_table(tbl) |>
   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
@@ -69,5 +71,6 @@ library(ggplot2)
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_point()
 save_docx(p, path = tempfile(fileext = ".docx"))
+}
 
 }

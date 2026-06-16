@@ -5,6 +5,8 @@ Authors@R: c(
     person("Daniel D.", "Sjoberg", , "danield.sjoberg@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0862-2018")),
     person("Benoit", "Falquet", , "benoit.falquet@roche.com", role = "aut"),
+    person("Davide", "Garolini", , "davide.garolini@roche.com", role = "aut",
+           comment = c(ORCID = "0000-0002-1445-1369")),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: Save tables and plots as Word, HTML, or plain text documents
@@ -39,4 +41,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+RoxygenNote: 8.0.0
