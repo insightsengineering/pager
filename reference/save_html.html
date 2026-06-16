@@ -25,7 +25,16 @@
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/insightsengineering/pager/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -35,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Save as HTML</h1>
-
+    <small class="dont-index">Source: <a href="https://github.com/insightsengineering/pager/blob/main/R/save_as_html.R" class="external-link"><code>R/save_as_html.R</code></a></small>
     <div class="hidden name"><code>save_html.Rd</code></div>
     </div>
 
@@ -86,16 +95,18 @@ optional CSS style block to embed in the HTML output. Default is <code>NULL</cod
 <span class="r-in"><span>    id <span class="op">=</span> <span class="va">USUBJID</span>,</span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># rendering to html is slow, so these calls are not run during routine checks</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># save a gtsummary table as html</span></span></span>
 <span class="r-in"><span><span class="va">tbl</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_html</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".html"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpVH4Fyk/file1a964eb0cc71.html</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/Rtmph1vU5T/file1c077981902f.html</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># save as html with gt</span></span></span>
 <span class="r-in"><span><span class="va">tbl</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/as_gt.html" class="external-link">as_gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_html</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".html"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpVH4Fyk/file1a962e4b21f7.html</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/Rtmph1vU5T/file1c0726c184b8.html</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># save as html with custom CSS</span></span></span>
 <span class="r-in"><span><span class="va">tbl</span> <span class="op">|&gt;</span></span></span>
@@ -104,12 +115,13 @@ optional CSS style block to embed in the HTML output. Default is <code>NULL</cod
 <span class="r-in"><span>    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".html"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    css <span class="op">=</span> <span class="st">"body { font-family: Arial; font-size: 12px; }"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpVH4Fyk/file1a961f796bc6.html</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/Rtmph1vU5T/file1c0713cb7d9c.html</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># save a paginated table as html — pages are separated by a horizontal rule</span></span></span>
 <span class="r-in"><span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_split_by.html" class="external-link">tbl_split_by_rows</a></span><span class="op">(</span><span class="va">tbl</span>, row_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">save_html</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".html"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/RtmpVH4Fyk/file1a963ccee5b4.html</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">/tmp/Rtmph1vU5T/file1c0713419a08.html</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -121,7 +133,7 @@ optional CSS style block to embed in the HTML output. Default is <code>NULL</cod
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Daniel D. Sjoberg, Benoit Falquet, F. Hoffmann-La Roche AG.</p>
+  <p></p><p>Developed by Daniel D. Sjoberg, Benoit Falquet, Davide Garolini, F. Hoffmann-La Roche AG.</p>
 </div>
 
 <div class="pkgdown">

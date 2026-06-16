@@ -27,7 +27,16 @@ and loads the object to be printed."><!-- mathjax --><script src="https://cdnjs.
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/insightsengineering/pager/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -37,7 +46,7 @@ and loads the object to be printed."><!-- mathjax --><script src="https://cdnjs.
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create YAML Header</h1>
-
+    <small class="dont-index">Source: <a href="https://github.com/insightsengineering/pager/blob/main/R/create_yaml_header.R" class="external-link"><code>R/create_yaml_header.R</code></a></small>
     <div class="hidden name"><code>create_yaml_header.Rd</code></div>
     </div>
 
@@ -88,13 +97,13 @@ path the reference Word document.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   word_document:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     reference_docx: /tmp/RtmpVH4Fyk/file1a965384b885.docx</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     reference_docx: /tmp/Rtmph1vU5T/file1c073dc274eb.docx</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ```{r setup, include=FALSE}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> knitr::opts_chunk$set(echo = FALSE, message = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> library(flextable)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;- readRDS(file = "/tmp/RtmpVH4Fyk/file1a96211ac26e.rds")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;- readRDS(file = "/tmp/Rtmph1vU5T/file1c07150ecbf3.rds")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> if (!is_simple_list(x)) x &lt;- list(x)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> print_obj &lt;- function(obj) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   if (inherits(obj, 'grob')) grid::grid.draw(obj) else obj</span>
@@ -111,7 +120,7 @@ path the reference Word document.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Daniel D. Sjoberg, Benoit Falquet, F. Hoffmann-La Roche AG.</p>
+  <p></p><p>Developed by Daniel D. Sjoberg, Benoit Falquet, Davide Garolini, F. Hoffmann-La Roche AG.</p>
 </div>
 
 <div class="pkgdown">
