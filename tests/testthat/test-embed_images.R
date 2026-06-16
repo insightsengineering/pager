@@ -58,12 +58,12 @@ test_that("embed_ondisk_images() leaves an image-free document unchanged", {
   expect_identical(before, after)
 })
 
-test_that("save_docx() warns when a gt table carries inline images", {
+test_that("save_docx() errors when a gt table carries inline images", {
   skip_on_cran()
   skip_if_not_installed("zip")
 
   # build a docx whose document.xml contains the escaped data-URI signature that
-  # gt produces for inline plots, then confirm the post-processor warns
+  # gt produces for inline plots, then confirm the post-processor stops
   path <- withr::local_tempfile(fileext = ".docx")
   save_docx(gt::gt(head(mtcars)), path)
 
@@ -76,5 +76,7 @@ test_that("save_docx() warns when a gt table carries inline images", {
   files <- list.files(extract_dir, recursive = TRUE, all.files = TRUE, no.. = TRUE)
   withr::with_dir(extract_dir, zip::zip(path, files = files))
 
-  expect_snapshot(embed_ondisk_images(path))
+  expect_snapshot(embed_ondisk_images(path), error = TRUE)
+  # the unopenable file is not left behind
+  expect_false(fs::file_exists(path))
 })

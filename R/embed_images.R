@@ -1,25 +1,19 @@
-#' Embed On-Disk Images Into a Word Document (internal)
-#'
-#' @description
-#' Repairs a `.docx` file whose images are referenced by absolute file-system
-#' paths rather than packaged into the archive.
-#'
-#' When a `flextable` containing inline images (for example, the forest-plot
-#' column produced by `crane::add_forest()`) is rendered to Word through the
-#' R Markdown/pandoc path, the resulting `<w:drawing>` elements reference the
-#' images by their temporary on-disk path (`r:embed="/tmp/.../file.png"`). Those
-#' files are never copied into the archive, so Word cannot open the document.
-#'
-#' This function copies each referenced image into `word/media/`, registers an
-#' image relationship for it, rewrites the `r:embed` attribute to the new
-#' relationship id, and ensures the image's content type is declared. The
-#' archive is repacked in place.
-#'
-#' @param path (`string`)\cr
-#'   path to the `.docx` file to repair.
-#'
-#' @returns `path`, invisibly. Called for the side effect of rewriting the file.
-#' @keywords internal
+# Embed on-disk images into a Word document.
+#
+# Repairs a `.docx` file whose images are referenced by absolute file-system
+# paths rather than packaged into the archive.
+#
+# When a flextable containing inline images (for example, the forest-plot column
+# produced by `crane::add_forest()`) is rendered to Word through the
+# R Markdown/pandoc path, the resulting `<w:drawing>` elements reference the
+# images by their temporary on-disk path (`r:embed="/tmp/.../file.png"`). Those
+# files are never copied into the archive, so Word cannot open the document.
+#
+# This function copies each referenced image into `word/media/`, registers an
+# image relationship for it, rewrites the `r:embed` attribute to the new
+# relationship id, and ensures the image's content type is declared. The archive
+# is repacked in place. Returns `path`, invisibly.
+#' @noRd
 embed_ondisk_images <- function(path) {
   # the repair relies on {zip} to unpack and repack the archive
   if (!rlang::is_installed("zip")) {
@@ -41,13 +35,13 @@ embed_ondisk_images <- function(path) {
 
   # gt tables embed inline plots as data-URI <img> HTML, which pandoc writes to
   # Word as escaped text rather than a drawing. These cannot be repaired here, so
-  # warn and point the user at an output format that renders them.
+  # stop and point the user at a path that renders them.
   if (grepl('&lt;img src="data:image', doc, fixed = TRUE)) {
-    cli::cli_warn(
+    fs::file_delete(path)
+    cli::cli_abort(
       c(
-        "The table contains inline images (for example a {.fn crane::add_forest} plot built with {.code table_engine = \"gt\"}) that cannot be embedded in a Word document.",
-        i = "The images will not display correctly.",
-        i = "Use {.fn save_html} instead, or build the table with the default {.code table_engine = \"flextable\"}."
+        "Tables with inline images built with {.code table_engine = \"gt\"} cannot be saved to Word.",
+        i = "Build the table with {.code table_engine = \"flextable\"} in {.fn crane::add_forest}, or use gt's native Word export (see {.fn gt::gtsave})."
       ),
       call = get_cli_abort_call()
     )
