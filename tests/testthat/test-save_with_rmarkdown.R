@@ -130,3 +130,13 @@ test_that("save_docx() works with figures", {
   )
   expect_true(file.exists(file_path))
 })
+
+test_that("save_docx() reports rendering errors", {
+  # a path inside a non-existent directory passes the string check but fails
+  # when rmarkdown::render() writes the output
+  expect_error(
+    save_docx(x = gtsummary::as_gt(tbl), path = "/nonexistent_dir_xyz/out.docx"),
+    "There was an error rendering the document.",
+    fixed = TRUE
+  )
+})
