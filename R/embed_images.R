@@ -35,16 +35,15 @@ embed_ondisk_images <- function(path) {
 
   # gt tables embed inline plots as data-URI <img> HTML, which pandoc writes to
   # Word as escaped text rather than a drawing. These cannot be repaired here, so
-  # stop and point the user at a path that renders them.
+  # warn and point the user at a path that renders them.
   if (grepl('&lt;img src="data:image', doc, fixed = TRUE)) {
-    fs::file_delete(path)
-    cli::cli_abort(
+    cli::cli_warn(
       c(
-        "Tables with inline images built with {.code table_engine = \"gt\"} cannot be saved to Word.",
+        "Inline images built with {.code table_engine = \"gt\"} cannot be embedded in Word and will not display correctly.",
         i = "Build the table with {.code table_engine = \"flextable\"} in {.fn crane::add_forest}, or use gt's native Word export (see {.fn gt::gtsave})."
-      ),
-      call = get_cli_abort_call()
+      )
     )
+    return(invisible(path))
   }
 
   # collect r:embed targets that point at an existing image file on disk
