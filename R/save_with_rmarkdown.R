@@ -38,7 +38,7 @@ save_docx_with_rmarkdown <- function(x,
   pkg_to_attach <-
     ifelse(is_simple_list(x), map(x, class), list(class(x))) |>
     unlist() |>
-    intersect(x = _, accepted_obj)
+    intersect(accepted_obj)
 
   pkg_to_attach <-
     dplyr::recode_values(
@@ -109,6 +109,8 @@ is_simple_list <- function(x) {
 #'     id = USUBJID,
 #'   )
 #'
+#' # rendering to docx is slow, so these calls are not run during routine checks
+#' \donttest{
 #' # save as docx with flextable
 #' gtsummary::as_flex_table(tbl) |>
 #'   flextable::set_table_properties(layout = "autofit") |> # otherwise is going too wide
@@ -142,6 +144,7 @@ is_simple_list <- function(x) {
 #' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'   geom_point()
 #' save_docx(p, path = tempfile(fileext = ".docx"))
+#' }
 #'
 #' @export
 save_docx <- function(x, path, reference_docx = get_reference_docx("portrait")) {

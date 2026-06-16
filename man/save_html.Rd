@@ -36,6 +36,8 @@ tbl <-
     id = USUBJID,
   )
 
+# rendering to html is slow, so these calls are not run during routine checks
+\donttest{
 # save a gtsummary table as html
 tbl |>
   save_html(path = tempfile(fileext = ".html"))
@@ -56,5 +58,6 @@ tbl |>
 # save a paginated table as html — pages are separated by a horizontal rule
 gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
   save_html(path = tempfile(fileext = ".html"))
+}
 
 }

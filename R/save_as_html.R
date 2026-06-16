@@ -123,7 +123,7 @@ save_html_with_rmarkdown <- function(x,
   pkg_to_attach <-
     ifelse(is_simple_list(x), map(x, class), list(class(x))) |>
     unlist() |>
-    intersect(x = _, accepted_obj)
+    intersect(accepted_obj)
 
   pkg_to_attach <-
     dplyr::recode_values(
@@ -199,6 +199,8 @@ save_html_with_rmarkdown <- function(x,
 #'     id = USUBJID,
 #'   )
 #'
+#' # rendering to html is slow, so these calls are not run during routine checks
+#' \donttest{
 #' # save a gtsummary table as html
 #' tbl |>
 #'   save_html(path = tempfile(fileext = ".html"))
@@ -219,6 +221,7 @@ save_html_with_rmarkdown <- function(x,
 #' # save a paginated table as html — pages are separated by a horizontal rule
 #' gtsummary::tbl_split_by_rows(tbl, row_numbers = seq(20, nrow(tbl), by = 20)) |>
 #'   save_html(path = tempfile(fileext = ".html"))
+#' }
 #'
 #' @export
 save_html <- function(x, path, css = NULL) {
