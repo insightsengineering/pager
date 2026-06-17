@@ -148,3 +148,13 @@ test_that("save_html() fails with incorrect inputs", {
     "The `css` argument must be a string, not a number."
   )
 })
+
+test_that("save_html() reports rendering errors", {
+  # a path inside a non-existent directory passes the string check but fails
+  # when rmarkdown::render() writes the output
+  expect_error(
+    save_html(x = gt_tbl, path = "/nonexistent_dir_xyz/out.html"),
+    "There was an error rendering the document.",
+    fixed = TRUE
+  )
+})

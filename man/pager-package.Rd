@@ -4,16 +4,27 @@
 \name{pager-package}
 \alias{pager}
 \alias{pager-package}
-\title{pager: What the Package Does (One Line, Title Case)}
+\title{pager: Save Tables and Plots as Word, HTML, or Text Documents}
 \description{
-What the package does (one paragraph).
+Save tables and plots as Word, HTML, or plain text documents via R Markdown. Tables of class 'gtsummary', 'gt', and 'flextable', as well as 'ggplot' and 'grob' plots, are supported. Lists of objects are rendered across multiple pages, making it straightforward to export paginated clinical reporting outputs.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/insightsengineering/pager}
+  \item \url{https://insightsengineering.github.io/pager/}
+  \item Report bugs at \url{https://github.com/insightsengineering/pager/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Daniel D. Sjoberg \email{danield.sjoberg@gmail.com} (\href{https://orcid.org/0000-0003-0862-2018}{ORCID})
 
 Authors:
 \itemize{
+  \item Daniel D. Sjoberg \email{danield.sjoberg@gmail.com} (\href{https://orcid.org/0000-0003-0862-2018}{ORCID})
   \item Benoit Falquet \email{benoit.falquet@roche.com}
+  \item Davide Garolini \email{davide.garolini@roche.com} (\href{https://orcid.org/0000-0002-1445-1369}{ORCID})
 }
 
 Other contributors:
